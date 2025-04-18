@@ -1,29 +1,25 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Инструкция по установке</title>
-  <link href="style.css" rel="stylesheet">
+  <title>Установка | Инструкция</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header id="site-header">
+  <header>
     <div class="logo"></div>
-    <h1>Инструкция по установке</h1>
+    <h1 id="mainTitle">Инструкция по установке</h1>
   </header>
-
   <div class="content">
     <div class="step-button" onclick="openModal('cert')">Получить сертификат</div>
-    <div class="step-button" onclick="openModal('ipa')">Установщик iPA файлов</div>
+    <div class="step-button" onclick="openModal('ipa')">Установщик IPA файлов</div>
   </div>
-
   <button class="help-btn" onclick="openModal('cert')">?</button>
-
-  <!-- Общий шаблон модального окна -->
   <div id="modal" class="modal" onclick="closeModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
       <span class="close" onclick="closeModal(event)">&times;</span>
-      <div class="step-progress" id="stepProgress"></div>
+      <div class="step-progress" id="stepProgress">Шаг 1 из 2</div>
       <div id="stepContent"></div>
       <div class="nav-buttons">
         <button onclick="prevStep()">← Назад</button>
@@ -31,91 +27,6 @@
       </div>
     </div>
   </div>
-
-  <script>
-    const modal = document.getElementById('modal');
-    const stepContent = document.getElementById('stepContent');
-    const stepProgress = document.getElementById('stepProgress');
-    const siteHeader = document.getElementById('site-header');
-
-    const stepsMap = {
-      cert: [
-        \`<h2>1. Получение UDiD</h2>
-        <p>1. Откройте <b>UDiD_Bot</b> и нажмите "Старт".</p>
-        <p>2. Нажмите "Получить UDiD" → "Get UDiD" → "Разрешить" → "Закрыть".</p>
-        <p>3. Перейдите в Настройки → Профиль загружен → Установить.</p>
-        <p>4. После установки вас перекинет обратно в бот с вашим UDiD:</p>
-        <pre><code>UDID: 00008101-001E5C1A36C0001E</code></pre>`,
-
-        \`<h2>2. Получение сертификата</h2>
-        <p>1. Нажмите "Статус UDiD".</p>
-        <p>2. Введите ваш UDID без пробелов.</p>
-        <p>3. Подтвердите → Получите 2 файла сертификата.</p>
-        <p>4. Сохраните их на устройство.</p>\`
-      ],
-
-      ipa: [
-        \`<h2>Установщик iPA файлов</h2>
-        <p><b>В UDiD_Bot вам будут предложены 4 варианта установщиков — выберите свой:</b></p>
-        <div class="ipa-buttons">
-          <button onclick="showSubStep('esign')">ESign</button>
-          <button onclick="showSubStep('gbox')">Gbox</button>
-          <button onclick="showSubStep('feather')">Feather</button>
-          <button onclick="showSubStep('scarlet')">Scarlet</button>
-        </div>
-        <div id="subStepContent" class="sub-step"></div>\`
-      ]
-    };
-
-    const subSteps = {
-      esign: \`<h2>Установка через ESign</h2><p>1. Скачайте приложение ESign...</p>\`,
-      gbox: \`<h2>Установка через Gbox</h2><p>1. Перейдите на сайт Gbox...</p>\`,
-      feather: \`<h2>Установка через Feather</h2><p>1. Установите Feather по инструкции...</p>\`,
-      scarlet: \`<h2>Установка через Scarlet</h2><p>1. Добавьте источник Scarlet в Safari...</p>\`
-    };
-
-    let currentSteps = [];
-    let currentStepIndex = 0;
-
-    function openModal(type) {
-      currentSteps = stepsMap[type];
-      currentStepIndex = 0;
-      showStep();
-      modal.style.display = 'block';
-      document.body.style.overflow = 'hidden';
-      siteHeader.style.display = 'none';
-    }
-
-    function closeModal(e) {
-      if (e.target === modal || e.target.classList.contains('close')) {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-        siteHeader.style.display = 'flex';
-      }
-    }
-
-    function showStep() {
-      stepContent.innerHTML = currentSteps[currentStepIndex];
-      stepProgress.textContent = \`Шаг \${currentStepIndex + 1} из \${currentSteps.length}\`;
-    }
-
-    function nextStep() {
-      if (currentStepIndex < currentSteps.length - 1) {
-        currentStepIndex++;
-        showStep();
-      }
-    }
-
-    function prevStep() {
-      if (currentStepIndex > 0) {
-        currentStepIndex--;
-        showStep();
-      }
-    }
-
-    function showSubStep(type) {
-      document.getElementById("subStepContent").innerHTML = subSteps[type];
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
