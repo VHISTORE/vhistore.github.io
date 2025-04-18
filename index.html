@@ -4,7 +4,189 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vibe Hack iPA</title>
-  <link rel="stylesheet" href="style.css">
+
+  <!-- Подключение кастомного шрифта Cyber Arkcon -->
+  <style>
+    @font-face {
+      font-family: 'Cyber Arkcon';
+      src: url('CyberArkcon.ttf') format('truetype'); /* Укажите путь к вашему файлу шрифта */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Cyber Arkcon', sans-serif; /* Применяем кастомный шрифт */
+      background: #1a1a1a;
+      color: #fff;
+      overflow-x: hidden;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 20px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 2.5em;
+      color: #fff;
+      animation: colorChange 5s linear infinite;
+    }
+
+    @keyframes colorChange {
+      0% { color: #1e90ff; }
+      25% { color: #ff6347; }
+      50% { color: #32cd32; }
+      75% { color: #ff1493; }
+      100% { color: #00bfff; }
+    }
+
+    .logo {
+      width: 32px;
+      height: 32px;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg') no-repeat center;
+      background-size: contain;
+    }
+
+    .content {
+      padding: 30px 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .step-button {
+      display: block;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 20px;
+      font-size: 1.1em;
+      text-align: center;
+      color: #fff;
+      margin-bottom: 20px;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .step-button:hover {
+      background: rgba(255,255,255,0.15);
+      transform: scale(1.05);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 99;
+      overflow-y: auto;
+      padding: 40px 20px;
+    }
+
+    .modal-content {
+      max-width: 600px;
+      background: #2a2a2a;
+      border-radius: 16px;
+      margin: auto;
+      padding: 25px;
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      font-size: 24px;
+      color: #aaa;
+      cursor: pointer;
+    }
+
+    .step-progress {
+      font-size: 1em;
+      opacity: 0.8;
+      margin-bottom: 15px;
+      color: #fff;  /* Сделаем текст белым */
+    }
+
+    h2 {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+      color: #ffd700;
+    }
+
+    p, pre {
+      line-height: 1.6;
+      margin: 8px 0;
+      color: #fff;  /* Текст в инструкциях будет белым */
+    }
+
+    pre {
+      background: rgba(255,255,255,0.05);
+      padding: 10px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .nav-buttons button {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .nav-buttons button:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .help-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 24px;
+      border: none;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    body.light {
+      background: #f0f0f0;
+      color: #333;
+    }
+
+    body.light header {
+      background: rgba(0,0,0,0.05);
+    }
+
+    @media (max-width: 600px) {
+      .modal-content { padding: 18px; }
+      .nav-buttons { flex-direction: column; gap: 10px; }
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -25,6 +207,54 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    const modal = document.getElementById('modal');
+    const stepContent = document.getElementById('stepContent');
+
+    const steps = {
+      certificate: `
+        <h2>Получение сертификата</h2>
+        <div class="step-progress">Шаг 1: Перейдите на сайт UDiD_Bot и нажмите кнопку "Старт".</div>
+        <div class="step-progress">Шаг 2: Нажмите кнопку "Получить UDiD". Вы будете перенаправлены в браузер для загрузки профиля конфигурации. Нажмите "Разрешить" для продолжения.</div>
+        <div class="step-progress">Шаг 3: Перейдите в настройки устройства. В разделе "Профили и управление устройствами" установите загруженный профиль.</div>
+        <div class="step-progress">Шаг 4: Нажмите "Получить сертификат". Система предоставит два файла сертификатов для дальнейшего использования.</div>
+        <div class="step-progress">Шаг 5: Сохраните оба файла сертификата на вашем устройстве для использования с установщиком IPA-файлов.</div>
+        <div class="step-progress">Шаг 6: После получения сертификатов продолжите процесс установки IPA файлов, следуя инструкциям в разделе "Установщик IPA файлов".</div>
+      `,
+      installers: `
+        <h2>Установщик iPA файлов</h2>
+        <div class="step-progress">Шаг 1: Выберите один из установщиков:</div>
+        <div class="step-button" onclick="openInstaller('ESign')">ESign</div>
+        <div class="step-button" onclick="openInstaller('Gbox')">GBox</div>
+        <div class="step-button" onclick="openInstaller('Feather')">Feather</div>
+        <div class="step-button" onclick="openInstaller('Scarlet')">Scarlet</div>
+      `,
+      ESign: `
+        <h2>Инструкция для ESign</h2>
+        <div class="step-progress">Шаг 1: Нажмите кнопку ESign, затем выберите "Установить" / "Install". После этого вас перенаправит в браузер, где снова будет предложено установить профиль конфигурации. Нажмите "Установить", чтобы начать процесс.</div>
+        <div class="step-progress">Шаг 2: После нажатия "Установить" вернитесь на главный экран устройства и дождитесь завершения загрузки установщика.</div>
+        <div class="step-progress">Шаг 3: Перейдите в настройки устройства. Откройте "Настройки", затем перейдите в раздел "Конфиденциальность и безопасность". Прокрутите вниз до раздела "Режим разработчика" и включите его.</div>
+        <div class="step-progress">Шаг 4: После этого ваше устройство перезагрузится, и вы сможете открыть установщик.</div>
+        <div class="step-progress">Шаг 5: В установщике выберите "Импортировать сертификат". Нажмите на иконку "…" в верхнем правом углу и выберите "Импорт". Загрузите оба файла сертификатов и введите пароль (обычно стандартный: "1").</div>
+        <div class="step-progress">Шаг 6: После импорта сертификатов вы можете начать устанавливать IPA файлы. Для этого загрузите нужный файл, выберите его и нажмите "Импорт".</div>
+        <div class="step-progress">Шаг 7: После завершения импорта вернитесь в раздел "Приложения" и выберите установленное приложение. Нажмите "Подписать", затем включите ползунок "Установить". Подтвердите установку, и приложение будет готово к использованию.</div>
+      `
+    };
+
+    function openModal(step) {
+      stepContent.innerHTML = steps[step] || 'Инструкция не найдена.';
+      modal.style.display = 'block';
+    }
+
+    function closeModal(event) {
+      if (event.target === modal || event.target === document.querySelector('.close')) {
+        modal.style.display = 'none';
+      }
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('light');
+    }
+  </script>
 </body>
 </html>
