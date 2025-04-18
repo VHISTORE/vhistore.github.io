@@ -1,82 +1,53 @@
 
 const modal = document.getElementById('modal');
 const stepContent = document.getElementById('stepContent');
-const stepProgress = document.getElementById('stepProgress');
-const mainTitle = document.getElementById('mainTitle');
 
-const stepsData = {
-  cert: [
-    `<h2>1. Получение UDiD</h2>
-    <p>1. Откройте <b>UDiD_Bot</b> и нажмите "Старт".</p>
-    <p>2. Нажмите "Получить UDiD" → "Get UDiD" → "Разрешить" → "Закрыть".</p>
-    <p>3. Перейдите в Настройки → Профиль загружен → Установить.</p>
-    <p>4. После установки вас перекинет обратно в бот с вашим UDiD:</p>
-    <pre><code>UDID: 00008101-001E5C1A36C0001E</code></pre>`,
-    `<h2>2. Получение сертификата</h2>
-    <p>1. Нажмите "Статус UDiD".</p>
-    <p>2. Введите ваш UDID без пробелов.</p>
-    <p>3. Подтвердите → Получите 2 файла сертификата.</p>
-    <p>4. Сохраните их на устройство.</p>`
-  ],
-  ipa: [
-    `<h2>Установщик IPA файлов</h2>
-    <p><b>В UDiD_Bot вам будут предложены 4 варианта установщиков — выберите свой:</b></p>
-    <div class="step-button" onclick="loadInstaller('esign')">ESign</div>
-    <div class="step-button" onclick="loadInstaller('gbox')">Gbox</div>
-    <div class="step-button" onclick="loadInstaller('feather')">Feather</div>
-    <div class="step-button" onclick="loadInstaller('scarlet')">Scarlet</div>`
-  ]
+const steps = {
+  certificate: `
+    <h2>Получение сертификата</h2>
+    <div class="step-progress">Шаг 1: Перейдите на сайт UDiD_Bot и нажмите кнопку "Старт".</div>
+    <div class="step-progress">Шаг 2: Нажмите "Получить UDiD", разрешите загрузку профиля.</div>
+    <div class="step-progress">Шаг 3: В настройках установите загруженный профиль.</div>
+    <div class="step-progress">Шаг 4: Нажмите "Получить сертификат" — получите два файла.</div>
+    <div class="step-progress">Шаг 5: Сохраните файлы на устройстве для использования с iPA.</div>
+    <div class="step-progress">Шаг 6: Перейдите к инструкции по установке iPA файлов.</div>
+  `,
+  installers: `
+    <h2>Установщик iPA файлов</h2>
+    <div class="step-progress">Шаг 1: Выберите установщик:</div>
+    <div class="step-button" onclick="openInstaller('ESign')">ESign</div>
+    <div class="step-button" onclick="openInstaller('Gbox')">GBox</div>
+    <div class="step-button" onclick="openInstaller('Feather')">Feather</div>
+    <div class="step-button" onclick="openInstaller('Scarlet')">Scarlet</div>
+  `,
+  ESign: `
+    <h2>Инструкция для ESign</h2>
+    <div class="step-progress">Шаг 1: Нажмите кнопку ESign и выберите "Установить".</div>
+    <div class="step-progress">Шаг 2: После установки включите "Режим разработчика" в настройках.</div>
+    <div class="step-progress">Шаг 3: Откройте установщик → Файлы → "…" → "Импортировать сертификат".</div>
+    <div class="step-progress">Шаг 4: Выберите .p12 и .mobileprovision файлы, введите пароль "1".</div>
+    <div class="step-progress">Шаг 5: После импорта можно устанавливать iPA.</div>
+  `,
+  Gbox: `<h2>Инструкция для GBox</h2><p>Шаги для GBox...</p>`,
+  Feather: `<h2>Инструкция для Feather</h2><p>Шаги для Feather...</p>`,
+  Scarlet: `<h2>Инструкция для Scarlet</h2><p>Шаги для Scarlet...</p>`
 };
 
-const installers = {
-  esign: `<h2>ESign</h2><p>Инструкция по установке через ESign...</p>`,
-  gbox: `<h2>Gbox</h2><p>Инструкция по установке через Gbox...</p>`,
-  feather: `<h2>Feather</h2><p>Инструкция по установке через Feather...</p>`,
-  scarlet: `<h2>Scarlet</h2><p>Инструкция по установке через Scarlet...</p>`,
-};
-
-let currentStep = 0;
-let currentSection = 'cert';
-
-function openModal(section) {
+function openModal(step) {
+  stepContent.innerHTML = steps[step];
   modal.style.display = 'block';
-  document.body.style.overflow = 'hidden';
-  mainTitle.style.display = 'none';
-  currentSection = section;
-  currentStep = 0;
-  showStep();
 }
 
-function closeModal(e) {
-  if (e.target === modal || e.target.classList.contains('close')) {
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto';
-    mainTitle.style.display = '';
-  }
+function closeModal(event) {
+  modal.style.display = 'none';
 }
 
-function showStep() {
-  const steps = stepsData[currentSection];
-  stepContent.innerHTML = steps[currentStep];
-  stepProgress.textContent = `Шаг ${currentStep + 1} из ${steps.length}`;
+function openInstaller(installer) {
+  openModal(installer);
 }
 
-function nextStep() {
-  const steps = stepsData[currentSection];
-  if (currentStep < steps.length - 1) {
-    currentStep++;
-    showStep();
-  }
-}
-
-function prevStep() {
-  if (currentStep > 0) {
-    currentStep--;
-    showStep();
-  }
-}
-
-function loadInstaller(name) {
-  stepContent.innerHTML = installers[name];
-  stepProgress.textContent = name.toUpperCase();
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  document.querySelector('button').textContent =
+    document.body.classList.contains('light') ? 'Тёмная тема' : 'Светлая тема';
 }
