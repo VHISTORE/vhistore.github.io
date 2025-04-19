@@ -65,12 +65,13 @@ animation: gradientMove 5s ease-in-out infinite;
 }
 
 .iphone-frame {
-margin-top: 20px;
-width: 95vw; /* Устанавливаем ширину на 95% от экрана */
-max-width: 500px; /* Максимальная ширина для больших экранов */
+width: 70vw;
 height: 620px;
-max-height: 95vh; /* Добавляем максимальную высоту для адаптации */
-border: 2px solid red;
+max-width: 95vw;
+max-height: 95vh;
+border: 2px solid;
+border-image: linear-gradient(45deg, #b0b0b0, #a0a0a0, #d0d0d0);
+border-image-slice: 1;
 border-radius: 40px;
 position: relative;
 padding: 30px 10px;
@@ -96,24 +97,22 @@ z-index: 5;
 
 .fps-display {
 position: absolute;
-top: 28px;
+top: 28px; /* Подняли счетчик FPS на уровень нижней части челки */
 left: 10px;
-font-size: 12px;
+font-size: 12px; /* Уменьшили размер для лучшего восприятия */
 color: #ff0;
 z-index: 10;
 font-weight: bold;
-animation: rainbowMove 3s linear infinite;
+background: linear-gradient(90deg, violet, indigo, blue, green, yellow, orange, red); /* Радужный градиент */
+-webkit-background-clip: text;
+color: transparent;
+animation: rainbowMove 3s ease-in-out infinite;
 }
 
 @keyframes rainbowMove {
-0% { color: red; }
-14% { color: orange; }
-28% { color: yellow; }
-42% { color: green; }
-57% { color: blue; }
-71% { color: indigo; }
-85% { color: violet; }
-100% { color: red; }
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
 }
 
 .content {
@@ -168,8 +167,8 @@ transform: scale(0.85);
 
 @media (max-width: 480px) {
 .iphone-frame {
-width: 70vw; /* Ширина на телефоне будет 85% от экрана */
-height: 550px;
+width: 250px;
+height: 560px;
 margin-top: 40px;
 }
 
