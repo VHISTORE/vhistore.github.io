@@ -15,12 +15,10 @@ body {
 font-family: sans-serif;
 background-color: #000;
 color: #fff;
-overflow: hidden; /* Убираем прокрутку */
+overflow: hidden;
 display: flex;
 flex-direction: column;
-justify-content: center;
 align-items: center;
-min-height: 100vh;
 }
 
 header {
@@ -41,7 +39,13 @@ height: 60px;
 
 .logo {
 font-size: 28px;
-margin-left: 10px;
+margin-right: 10px;
+animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+0%, 100% { opacity: 1; }
+50% { opacity: 0.2; }
 }
 
 h1.animated-title {
@@ -60,18 +64,39 @@ animation: gradientMove 5s ease-in-out infinite;
 100% { background-position: 0% 50%; }
 }
 
+.iphone-frame {
+margin-top: 120px;
+border: 2px solid red;
+border-radius: 40px;
+padding: 40px 20px 60px;
+position: relative;
+width: 320px;
+max-width: 90vw;
+}
+
+.notch {
+position: absolute;
+top: -2px;
+left: 50%;
+transform: translateX(-50%);
+width: 100px;
+height: 20px;
+background: black;
+border: 2px solid red;
+border-top-left-radius: 20px;
+border-top-right-radius: 20px;
+}
+
 .content {
 display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
 text-align: center;
-padding: 40px 20px;
-margin-top: 80px;
 }
 
 .step-button {
-border: none;
+border: 2px solid red;
 border-radius: 12px;
 padding: 12px 20px;
 font-size: 1.2em;
@@ -79,41 +104,16 @@ margin: 10px;
 color: #fff;
 cursor: pointer;
 font-weight: 600;
-background: #444;
-}
-
-#iphone-container {
-width: 350px;
-height: 700px;
-border: 12px solid #000; /* Контур iPhone */
-border-radius: 40px;
-padding: 20px;
-position: relative;
-background-color: transparent;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-margin-top: 100px;
-box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
-}
-
-#installersOverlay {
-position: fixed;
-inset: 0;
 background: transparent;
-z-index: 90;
+}
+
+.installers {
+margin-top: 10px;
 display: none;
 justify-content: center;
-align-items: center;
-padding: 20px;
-}
-
-#installersChoices {
-display: flex;
-gap: 8px;
-justify-content: center;
-flex-wrap: wrap;
+gap: 10px;
+flex-wrap: nowrap;
+flex-direction: row;
 }
 
 .installer-button {
@@ -131,32 +131,24 @@ font-weight: 600;
 .scarlet-button { background-color: #dc143c; color: black; }
 
 @media (max-width: 600px) {
-#iphone-container {
-width: 90%;
-height: 600px;
-}
-
-.step-button {
-font-size: 1em;
-padding: 10px 18px;
+.installers {
+flex-wrap: wrap;
 }
 }
 </style>
 </head>
 <body>
 <header>
-<h1 class="animated-title">Vibe Hack iPA</h1>
 <div class="logo"></div>
+<h1 class="animated-title">Vibe Hack iPA</h1>
 </header>
 
-<div id="iphone-container">
+<div class="iphone-frame">
+<div class="notch"></div>
 <div class="content">
 <div class="step-button" onclick="openModal('certificate')">Получить сертификат</div>
-<div class="step-button" onclick="showInstallers()">Установщик IPA файлов</div>
-</div>
-
-<div id="installersOverlay" onclick="closeInstallersOverlay()">
-<div id="installersChoices" onclick="event.stopPropagation()">
+<div class="step-button" onclick="toggleInstallers()">Установщик IPA файлов</div>
+<div id="installersChoices" class="installers">
 <button class="installer-button esign-button" onclick="openInstallerModal('ESign')">ESign</button>
 <button class="installer-button gbox-button" onclick="openInstallerModal('GBox')">GBox</button>
 <button class="installer-button feather-button" onclick="openInstallerModal('Feather')">Feather</button>
@@ -166,20 +158,17 @@ padding: 10px 18px;
 </div>
 
 <script>
-function showInstallers() {
-document.getElementById('installersOverlay').style.display = 'flex';
-}
-
-function closeInstallersOverlay() {
-document.getElementById('installersOverlay').style.display = 'none';
-}
-
-function openInstallerModal(type) {
-alert(`Инструкция для ${type} будет добавлена позже`);
-}
-
 function openModal(step) {
 alert(`Открыт раздел: ${step}`);
+}
+
+function toggleInstallers() {
+const installers = document.getElementById('installersChoices');
+installers.style.display = installers.style.display === 'flex' ? 'none' : 'flex';
+}
+
+function openInstallerModal(name) {
+alert(`Инструкция для ${name} будет добавлена позже`);
 }
 </script>
 </body>
