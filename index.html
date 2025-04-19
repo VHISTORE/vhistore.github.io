@@ -11,19 +11,15 @@ margin: 0;
 padding: 0;
 }
 
-html, body {
-height: 100%;
-overflow: hidden;
+body {
 font-family: sans-serif;
 background-color: #000;
 color: #fff;
-}
-
-body {
+overflow: hidden;
 display: flex;
 flex-direction: column;
 align-items: center;
-justify-content: center;
+height: 100vh;
 }
 
 header {
@@ -32,9 +28,12 @@ align-items: center;
 justify-content: center;
 padding: 10px;
 width: 100%;
+position: fixed;
+top: 0;
 background: rgba(0, 0, 0, 0.7);
 z-index: 10;
 border-bottom: 2px solid red;
+height: 60px;
 }
 
 .logo {
@@ -52,7 +51,7 @@ h1.animated-title {
 font-size: 1.8em;
 font-weight: 700;
 background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet, red);
-background-size: 400% 400%;
+background-size: 300% 300%;
 -webkit-background-clip: text;
 color: transparent;
 animation: gradientMove 5s ease-in-out infinite;
@@ -65,96 +64,79 @@ animation: gradientMove 5s ease-in-out infinite;
 }
 
 .iphone-frame {
+margin-top: 80px;
 border: 2px solid red;
 border-radius: 40px;
-padding: 60px 20px;
+padding: 30px 20px 40px;
 position: relative;
-width: 360px;
-aspect-ratio: 9 / 19.5;
+width: 280px;
+max-width: 90vw;
+height: 580px;
 display: flex;
-flex-direction: column;
 align-items: center;
 justify-content: center;
-margin-top: 10px;
+flex-direction: column;
 }
 
 .notch {
 position: absolute;
-top: 10px;
+top: -2px;
 left: 50%;
 transform: translateX(-50%);
-width: 110px;
-height: 25px;
+width: 100px;
+height: 18px;
 background: black;
 border: 2px solid red;
 border-radius: 20px;
-z-index: 2;
 }
 
-.fps-display {
+.fps-counter {
 position: absolute;
-top: 42px;
-left: 16px;
-font-size: 12px;
-z-index: 3;
+top: 22px;
+left: 20px;
+font-size: 0.9em;
 font-weight: bold;
-animation: rainbowText 6s linear infinite;
-}
-
-@keyframes rainbowText {
-0% { color: red; }
-14% { color: orange; }
-28% { color: yellow; }
-42% { color: green; }
-57% { color: blue; }
-71% { color: indigo; }
-85% { color: violet; }
-100% { color: red; }
+background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet, red);
+background-size: 300% 300%;
+-webkit-background-clip: text;
+color: transparent;
+animation: gradientMove 5s ease-in-out infinite;
 }
 
 .content {
 display: flex;
 flex-direction: column;
-justify-content: center;
 align-items: center;
 text-align: center;
-}
-
-.step-buttons {
-display: flex;
-justify-content: center;
 gap: 12px;
-margin-top: 10px;
-flex-wrap: wrap;
 }
 
 .step-button {
 border: 2px solid red;
-border-radius: 12px;
-padding: 10px 14px;
-font-size: 0.85em;
+border-radius: 10px;
+padding: 10px 12px;
+font-size: 1em;
+min-width: 120px;
 color: #fff;
 cursor: pointer;
 font-weight: 600;
 background: transparent;
-min-width: 140px;
-text-align: center;
 }
 
 .installers {
-margin-top: 14px;
+margin-top: 10px;
 display: none;
-justify-content: center;
-gap: 10px;
 flex-direction: row;
 flex-wrap: nowrap;
-z-index: 2;
+justify-content: center;
+gap: 8px;
+flex-shrink: 0;
 }
 
 .installer-button {
 border: none;
-padding: 8px 12px;
-font-size: 0.8em;
+padding: 6px 10px;
+font-size: 0.85em;
 border-radius: 8px;
 cursor: pointer;
 font-weight: 600;
@@ -166,35 +148,35 @@ font-weight: 600;
 .scarlet-button { background-color: #dc143c; color: black; }
 
 @media (max-width: 600px) {
-.installers {
-flex-wrap: wrap;
-}
-
-.step-buttons {
-flex-direction: column;
-align-items: center;
+.iphone-frame {
+transform: scale(0.95);
+margin-top: 90px;
 }
 
 .step-button {
-min-width: 160px;
+font-size: 0.9em;
+padding: 8px 10px;
+}
+
+.installer-button {
+font-size: 0.75em;
+padding: 4px 8px;
 }
 }
 </style>
 </head>
-<body onclick="closeInstallers()">
+<body>
 <header>
 <div class="logo"></div>
 <h1 class="animated-title">Vibe Hack iPA</h1>
 </header>
 
-<div class="iphone-frame" onclick="event.stopPropagation()">
+<div class="iphone-frame" id="iphoneFrame">
 <div class="notch"></div>
-<div class="fps-display" id="fps">FPS: 0</div>
+<div class="fps-counter" id="fpsCounter">FPS: 60</div>
 <div class="content">
-<div class="step-buttons">
 <div class="step-button" onclick="openModal('certificate')">Получить сертификат</div>
 <div class="step-button" onclick="toggleInstallers()">Установщик IPA файлов</div>
-</div>
 <div id="installersChoices" class="installers">
 <button class="installer-button esign-button" onclick="openInstallerModal('ESign')">ESign</button>
 <button class="installer-button gbox-button" onclick="openInstallerModal('GBox')">GBox</button>
@@ -205,40 +187,45 @@ min-width: 160px;
 </div>
 
 <script>
-let fpsElement = document.getElementById("fps");
-let frameCount = 0;
-let lastTime = performance.now();
-
-function updateFPS() {
-const now = performance.now();
-frameCount++;
-const delta = now - lastTime;
-if (delta >= 1000) {
-const fps = Math.round((frameCount / delta) * 1000);
-fpsElement.textContent = `FPS: ${fps}`;
-frameCount = 0;
-lastTime = now;
+function openModal(step) {
+alert(`Открыт раздел: ${step}`);
 }
-requestAnimationFrame(updateFPS);
-}
-updateFPS();
 
 function toggleInstallers() {
 const installers = document.getElementById('installersChoices');
 installers.style.display = installers.style.display === 'flex' ? 'none' : 'flex';
 }
 
-function closeInstallers() {
-document.getElementById('installersChoices').style.display = 'none';
-}
-
-function openModal(type) {
-alert(`Открыть модальное окно: ${type}`);
-}
-
 function openInstallerModal(name) {
-alert(`Выбран установщик: ${name}`);
+alert(`Инструкция для ${name} будет добавлена позже`);
 }
+
+document.body.addEventListener('click', function(e) {
+const installers = document.getElementById('installersChoices');
+const target = e.target;
+if (
+installers.style.display === 'flex' &&
+!target.classList.contains('step-button') &&
+!target.classList.contains('installer-button')
+) {
+installers.style.display = 'none';
+}
+});
+
+// FPS Simulation
+let lastFrameTime = performance.now();
+let fpsDisplay = document.getElementById("fpsCounter");
+
+function updateFPS() {
+const now = performance.now();
+const delta = now - lastFrameTime;
+lastFrameTime = now;
+const fps = Math.round(1000 / delta);
+fpsDisplay.textContent = `FPS: ${fps}`;
+requestAnimationFrame(updateFPS);
+}
+
+requestAnimationFrame(updateFPS);
 </script>
 </body>
 </html>
