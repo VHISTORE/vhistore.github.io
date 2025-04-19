@@ -12,12 +12,13 @@ padding: 0;
 }
 
 body {
-font-family: Arial, sans-serif;
+font-family: sans-serif;
 background-color: #000;
 color: #fff;
 overflow-x: hidden;
 display: flex;
 flex-direction: column;
+justify-content: center;
 align-items: center;
 min-height: 100vh;
 }
@@ -26,14 +27,16 @@ header {
 display: flex;
 align-items: center;
 justify-content: center;
-padding: 5px 15px;
-background: rgba(0, 0, 0, 0.7);
+padding: 10px;
 width: 100%;
 position: fixed;
 top: 0;
+left: 0;
+right: 0;
+background: rgba(0, 0, 0, 0.7);
 z-index: 10;
-height: 60px;
 border-bottom: 2px solid red;
+height: 60px;
 }
 
 .logo {
@@ -44,47 +47,45 @@ margin-left: 10px;
 h1.animated-title {
 font-size: 1.8em;
 font-weight: 700;
-letter-spacing: 2px;
-text-transform: uppercase;
-animation: gradientChange 5s ease-in-out infinite;
-background: linear-gradient(90deg, #ff4500, #ff6347);
+background: linear-gradient(90deg, #ff4500, #ff6347, #dc143c, #b22222, #ff4500);
+background-size: 300% 300%;
 -webkit-background-clip: text;
--webkit-text-fill-color: transparent;
+color: transparent;
+animation: gradientMove 5s ease-in-out infinite;
 }
 
-@keyframes gradientChange {
-0% { background: linear-gradient(90deg, #ff4500, #ff6347); }
-25% { background: linear-gradient(90deg, #ff6347, #dc143c); }
-50% { background: linear-gradient(90deg, #dc143c, #b22222); }
-75% { background: linear-gradient(90deg, #b22222, #ff4500); }
-100% { background: linear-gradient(90deg, #ff4500, #ff6347); }
+@keyframes gradientMove {
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
 }
 
 .content {
 display: flex;
 flex-direction: column;
+justify-content: center;
 align-items: center;
+text-align: center;
 padding: 40px 20px;
 margin-top: 120px;
 }
 
-.step-button.large {
-display: inline-block;
+.step-button {
 border: none;
 border-radius: 12px;
-padding: 14px 24px;
-font-size: 1.4em;
+padding: 12px 20px;
+font-size: 1.2em;
 margin: 10px;
 color: #fff;
 cursor: pointer;
 font-weight: 600;
-background-color: #444;
+background: #444;
 }
 
 #installersOverlay {
 position: fixed;
 inset: 0;
-background: rgba(0, 0, 0, 0.0);
+background: transparent;
 z-index: 90;
 display: none;
 justify-content: center;
@@ -93,101 +94,28 @@ padding: 20px;
 }
 
 #installersChoices {
-background: rgba(0, 0, 0, 0.5);
-backdrop-filter: blur(10px);
-border-radius: 16px;
-padding: 20px;
 display: flex;
-justify-content: center;
-gap: 12px;
-flex-wrap: nowrap;
+gap: 8px;
 }
 
-.install-button {
-width: 80px;
-height: 80px;
+.installer-button {
+border: none;
+padding: 8px 12px;
 font-size: 0.9em;
-border-radius: 10px;
-padding: 10px;
-color: #fff;
+border-radius: 8px;
 cursor: pointer;
 font-weight: 600;
-border: none;
-transition: transform 0.2s;
 }
 
-.modal {
-display: none;
-position: fixed;
-inset: 0;
-background: rgba(0, 0, 0, 0.7);
-backdrop-filter: blur(10px);
-z-index: 99;
-overflow-y: auto;
-padding: 40px 20px;
-}
-
-.modal-content {
-max-width: 400px;
-background: rgba(255, 255, 255, 0.05);
-border-radius: 16px;
-margin: auto;
-padding: 15px;
-position: relative;
-}
-
-.close {
-position: absolute;
-right: 20px;
-top: 15px;
-font-size: 24px;
-color: #aaa;
-cursor: pointer;
-}
-
-.nav-buttons {
-display: flex;
-justify-content: space-between;
-margin-top: 20px;
-}
-
-.nav-buttons button {
-background: rgba(255,255,255,0.1);
-border: none;
-padding: 10px 20px;
-border-radius: 8px;
-color: #fff;
-cursor: pointer;
-}
-
-.nav-buttons button:hover {
-background: rgba(255,255,255,0.2);
-}
-
-.theme-toggle {
-position: fixed;
-bottom: 16px;
-left: 16px;
-width: 38px;
-height: 38px;
-border-radius: 50%;
-background: rgba(255,255,255,0.1);
-color: white;
-font-size: 18px;
-border: none;
-cursor: pointer;
-z-index: 10;
-}
+.esign-button { background-color: #00bfff; }
+.gbox-button { background-color: #32cd32; color: black; }
+.feather-button { background-color: #9370db; }
+.scarlet-button { background-color: #dc143c; }
 
 @media (max-width: 600px) {
-.install-button {
-width: 70px;
-height: 70px;
-font-size: 0.8em;
-}
-
 #installersChoices {
 flex-wrap: wrap;
+justify-content: center;
 }
 }
 </style>
@@ -199,40 +127,20 @@ flex-wrap: wrap;
 </header>
 
 <div class="content">
-<div class="step-button large" onclick="openModal('certificate')">Получить сертификат</div>
-<div class="step-button large" onclick="showInstallers()">Установщик IPA файлов</div>
+<div class="step-button" onclick="openModal('certificate')">Получить сертификат</div>
+<div class="step-button" onclick="showInstallers()">Установщик IPA файлов</div>
 </div>
 
-<!-- Установщики -->
 <div id="installersOverlay" onclick="closeInstallersOverlay()">
 <div id="installersChoices" onclick="event.stopPropagation()">
-<button class="install-button" style="background:#00bfff;" onclick="openInstallerModal('ESign')">ESign</button>
-<button class="install-button" style="background:#32cd32; color:#000;" onclick="openInstallerModal('GBox')">GBox</button>
-<button class="install-button" style="background:#9370db;" onclick="openInstallerModal('Feather')">Feather</button>
-<button class="install-button" style="background:#dc143c;" onclick="openInstallerModal('Scarlet')">Scarlet</button>
+<button class="installer-button esign-button" onclick="openInstallerModal('ESign')">ESign</button>
+<button class="installer-button gbox-button" onclick="openInstallerModal('GBox')">GBox</button>
+<button class="installer-button feather-button" onclick="openInstallerModal('Feather')">Feather</button>
+<button class="installer-button scarlet-button" onclick="openInstallerModal('Scarlet')">Scarlet</button>
 </div>
 </div>
-
-<!-- Модалка -->
-<div id="modal" class="modal" onclick="closeModal(event)">
-<div class="modal-content">
-<span class="close" onclick="closeModal()">×</span>
-<h2>Инструкция</h2>
-<p>Здесь будет инструкция для выбранного инструмента.</p>
-<div class="nav-buttons">
-<button onclick="previousStep()">Назад</button>
-<button id="nextButton" onclick="nextStep()">Далее</button>
-</div>
-</div>
-</div>
-
-<button class="theme-toggle" onclick="toggleTheme()">🌙</button>
 
 <script>
-function toggleTheme() {
-document.body.classList.toggle('light-theme');
-}
-
 function showInstallers() {
 document.getElementById('installersOverlay').style.display = 'flex';
 }
@@ -241,26 +149,12 @@ function closeInstallersOverlay() {
 document.getElementById('installersOverlay').style.display = 'none';
 }
 
-function openInstallerModal(installType) {
-alert(`Инструкция для ${installType} будет добавлена позже!`);
+function openInstallerModal(type) {
+alert(`Инструкция для ${type} будет добавлена позже`);
 }
 
 function openModal(step) {
-document.getElementById('modal').style.display = 'flex';
-}
-
-function closeModal(event) {
-if (event.target === document.getElementById('modal')) {
-document.getElementById('modal').style.display = 'none';
-}
-}
-
-function previousStep() {
-console.log('Шаг назад');
-}
-
-function nextStep() {
-console.log('Шаг вперед');
+alert(`Открыт раздел: ${step}`);
 }
 </script>
 </body>
