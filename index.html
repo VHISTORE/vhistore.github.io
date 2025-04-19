@@ -80,25 +80,13 @@ flex-direction: column;
 
 .notch {
 position: absolute;
-top: -2px;
+top: 0;
 left: 50%;
 transform: translateX(-50%);
-width: 100px;
-height: 18px;
+width: 120px;
+height: 20px;
 background: black;
-border: 2px solid red;
-border-radius: 20px;
-}
-
-.upper-frame {
-position: absolute;
-top: -10px;
-left: 50%;
-transform: translateX(-50%);
-width: 160px;
-height: 5px;
-background-color: red;
-border-radius: 3px;
+border-radius: 15px;
 }
 
 .fps-counter {
@@ -183,7 +171,6 @@ padding: 4px 8px;
 </header>
 
 <div class="iphone-frame" id="iphoneFrame">
-<div class="upper-frame"></div>
 <div class="notch"></div>
 <div class="fps-counter" id="fpsCounter">FPS: 60</div>
 <div class="content">
