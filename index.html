@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
@@ -280,24 +280,7 @@
   <div id="modal" class="modal hidden" onclick="closeModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
       <span id="modalClose" class="modal-close" onclick="closeModal(event)">×</span>
-      <div id="modalBody">
-        <h3>Инструкция по получению UDiD</h3>
-        <ul>
-          <li>Откройте Telegram-бот <b>UDiD_Bot</b> и нажмите <b>Старт</b>.</li>
-          <li>Выберите <b>Получить UDiD</b> → <b>Get UDiD</b>.</li>
-          <li>В браузере нажмите <b>Разрешить</b> → <b>Закрыть</b>.</li>
-          <li>Перейдите в <b>Настройки</b> → <b>Профиль загружен</b>.</li>
-          <li>Нажмите <b>Установить</b>, введите код и подтвердите установку.</li>
-          <li>После установки вас вернёт в бот — вы получите сообщение с вашим UDID:
-            <code>UDID: 00008101-001E5C1A36C0001E
-            DEVICE: iPhone 12 Pro</code>
-          </li>
-          <li>Выберите <b>Статус UDiD</b> и вставьте только ваш UDID (без других символов).</li>
-          <li>Нажмите <b>Получить Сертификат</b> → <b>ОК</b>.</li>
-          <li>Через 5 секунд бот пришлёт 2 файла сертификата.</li>
-          <li>Сохраните оба файла на ваше устройство.</li>
-        </ul>
-      </div>
+      <div id="modalBody"></div>
     </div>
   </div>
 
@@ -323,12 +306,11 @@
     function toggleInstallers(event) {
       event.stopPropagation();
       const installers = document.getElementById('installersChoices');
-      installers.style.display = installers.style.display === 'flex' ? 'none' : 'flex';
+      installers.style.display = installers.style.display === 'none' ? 'flex' : 'none';
     }
 
     function closeInstallers() {
-      const installers = document.getElementById('installersChoices');
-      installers.style.display = 'none';
+      document.getElementById('installersChoices').style.display = 'none';
     }
 
     function openModal(content) {
@@ -338,7 +320,20 @@
       if (content === "certificate") {
         body.innerHTML = `
           <h3>Получить сертификат</h3>
-          <p>Сертификат можно получить через AltStore, Sideloadly или через наш сервис с моментальной выдачей. Подробнее — в Telegram.</p>
+          <ol>
+            <li>Откройте Telegram-бот <b>UDiD_Bot</b> и нажмите <b>Старт</b>.</li>
+            <li>Выберите <b>Получить UDiD</b> → <b>Get UDiD</b>.</li>
+            <li>В браузере нажмите <b>Разрешить</b> → <b>Закрыть</b>.</li>
+            <li>Перейдите в <b>Настройки</b> → <b>Профиль загружен</b>.</li>
+            <li>Нажмите <b>Установить</b>, введите код и подтвердите установку.</li>
+            <li>После установки вас вернёт в бот — вы получите сообщение с вашим UDID:
+              <code>UDID: 00008101-001E5C1A36C0001E<br>DEVICE: iPhone 12 Pro</code>
+            </li>
+            <li>Выберите <b>Статус UDiD</b> и вставьте только ваш UDID (без других символов).</li>
+            <li>Нажмите <b>Получить Сертификат</b> → <b>ОК</b>.</li>
+            <li>Через 5 секунд бот пришлёт 2 файла сертификата.</li>
+            <li>Сохраните оба файла на ваше устройство.</li>
+          </ol>
         `;
       } else {
         body.innerHTML = `
@@ -350,19 +345,17 @@
       modal.classList.remove("hidden");
     }
 
-    function closeModal() {
+    function closeModal(event) {
+      event.stopPropagation();
       document.getElementById("modal").classList.add("hidden");
     }
 
-    // Переключение темы
-    const toggleBtn = document.getElementById("themeToggle");
-    toggleBtn.addEventListener("click", () => {
-      document.body.classList.toggle("light");
-      toggleBtn.textContent = document.body.classList.contains("light") ? "☀️" : "🌙";
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      document.body.classList.toggle('light');
     });
 
-    // Старт FPS
     requestAnimationFrame(calculateFPS);
   </script>
 </body>
 </html>
+
