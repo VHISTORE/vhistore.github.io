@@ -84,16 +84,17 @@ background: #444;
 
 #installersOverlay {
 position: absolute;
-top: 140px; /* Смещаем установщики сразу под кнопкой */
+top: 200px; /* Сместил вниз, чтобы кнопки не перекрывали основной раздел */
 left: 0;
 right: 0;
-background: transparent;
+background: rgba(0, 0, 0, 0.7);
 z-index: 90;
 display: none;
 justify-content: center;
 align-items: center;
 padding: 20px;
-margin-top: 20px; /* Чтобы не перекрывать другие элементы */
+margin-top: 20px;
+border-radius: 10px;
 }
 
 #installersChoices {
