@@ -66,7 +66,7 @@ animation: gradientMove 5s ease-in-out infinite;
 
 .iphone-frame {
 margin-top: 20px;
-width: 350px; /* Увеличили ширину */
+width: 400px; /* Увеличили ширину до 400px */
 height: 620px;
 max-width: 95vw;
 max-height: 95vh;
@@ -102,16 +102,18 @@ font-size: 12px; /* Уменьшили размер для лучшего вос
 color: #ff0;
 z-index: 10;
 font-weight: bold;
-background: linear-gradient(90deg, violet, indigo, blue, green, yellow, orange, red); /* Радужный градиент */
--webkit-background-clip: text;
-color: transparent;
-animation: rainbowMove 5s linear infinite; /* Плавная анимация перехода через цвета */
+animation: rainbowMove 3s linear infinite; /* Плавная последовательная анимация */
 }
 
 @keyframes rainbowMove {
-0% { background-position: 0% 50%; }
-50% { background-position: 100% 50%; }
-100% { background-position: 0% 50%; }
+0% { color: red; }
+14% { color: orange; }
+28% { color: yellow; }
+42% { color: green; }
+57% { color: blue; }
+71% { color: indigo; }
+85% { color: violet; }
+100% { color: red; }
 }
 
 .content {
