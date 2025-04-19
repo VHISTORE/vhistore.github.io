@@ -11,16 +11,16 @@ margin: 0;
 padding: 0;
 }
 
-html, body {
-height: 100%;
-overflow: hidden;
+body {
 font-family: sans-serif;
 background-color: #000;
 color: #fff;
+overflow: hidden;
 display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
+min-height: 100vh;
 }
 
 header {
@@ -42,12 +42,12 @@ height: 60px;
 .logo {
 font-size: 28px;
 margin-right: 10px;
-animation: blink 1.5s infinite;
+animation: blink 1.2s infinite;
 }
 
 @keyframes blink {
 0%, 100% { opacity: 1; }
-50% { opacity: 0.3; }
+50% { opacity: 0.2; }
 }
 
 h1.animated-title {
@@ -72,7 +72,8 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 text-align: center;
-margin-top: 100px;
+padding: 40px 20px;
+margin-top: 120px;
 }
 
 .step-button {
@@ -84,21 +85,34 @@ margin: 10px;
 color: #fff;
 cursor: pointer;
 font-weight: 600;
-background: #000;
+background: #111;
 }
 
-#installersChoicesWrapper {
-margin-top: 10px;
+#installersOverlay {
+position: fixed;
+inset: 0;
+background: rgba(0, 0, 0, 0.7);
+z-index: 90;
 display: none;
 justify-content: center;
+align-items: center;
+padding: 20px;
+}
+
+#installersChoices {
+background: #111;
+padding: 15px 20px;
+border-radius: 12px;
+display: flex;
 gap: 8px;
+justify-content: center;
 flex-wrap: wrap;
 }
 
 .installer-button {
 border: none;
-padding: 8px 12px;
-font-size: 0.9em;
+padding: 10px 16px;
+font-size: 0.95em;
 border-radius: 8px;
 cursor: pointer;
 font-weight: 600;
@@ -110,24 +124,26 @@ font-weight: 600;
 .scarlet-button { background-color: #dc143c; color: black; }
 
 @media (max-width: 600px) {
-#installersChoicesWrapper {
-flex-direction: column;
-align-items: center;
+#installersChoices {
+flex-wrap: wrap;
+justify-content: center;
 }
 }
 </style>
 </head>
-<body>
+<body onclick="closeInstallersOverlay()">
 <header>
 <div class="logo"></div>
 <h1 class="animated-title">Vibe Hack iPA</h1>
 </header>
 
-<div class="content">
+<div class="content" onclick="event.stopPropagation()">
 <div class="step-button" onclick="openModal('certificate')">Получить сертификат</div>
-<div class="step-button" onclick="toggleInstallers()">Установщик IPA файлов</div>
+<div class="step-button" onclick="showInstallers()">Установщик IPA файлов</div>
+</div>
 
-<div id="installersChoicesWrapper" onclick="event.stopPropagation()">
+<div id="installersOverlay">
+<div id="installersChoices" onclick="event.stopPropagation()">
 <button class="installer-button esign-button" onclick="openInstallerModal('ESign')">ESign</button>
 <button class="installer-button gbox-button" onclick="openInstallerModal('GBox')">GBox</button>
 <button class="installer-button feather-button" onclick="openInstallerModal('Feather')">Feather</button>
@@ -136,13 +152,12 @@ align-items: center;
 </div>
 
 <script>
-document.body.addEventListener('click', () => {
-document.getElementById('installersChoicesWrapper').style.display = 'none';
-});
+function showInstallers() {
+document.getElementById('installersOverlay').style.display = 'flex';
+}
 
-function toggleInstallers() {
-const block = document.getElementById('installersChoicesWrapper');
-block.style.display = block.style.display === 'flex' ? 'none' : 'flex';
+function closeInstallersOverlay() {
+document.getElementById('installersOverlay').style.display = 'none';
 }
 
 function openInstallerModal(type) {
