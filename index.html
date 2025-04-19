@@ -15,7 +15,7 @@ body {
 font-family: sans-serif;
 background-color: #000;
 color: #fff;
-overflow-x: hidden;
+overflow: hidden; /* Убираем прокрутку */
 display: flex;
 flex-direction: column;
 justify-content: center;
@@ -67,7 +67,7 @@ justify-content: center;
 align-items: center;
 text-align: center;
 padding: 40px 20px;
-margin-top: 120px;
+margin-top: 80px;
 }
 
 .step-button {
@@ -83,23 +83,19 @@ background: #444;
 }
 
 #iphone-container {
-width: 400px;
-height: 800px;
-border: 10px solid #000;
+width: 350px;
+height: 700px;
+border: 12px solid #000; /* Контур iPhone */
 border-radius: 40px;
 padding: 20px;
 position: relative;
-background-color: #fff;
+background-color: transparent;
 display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
-margin-top: 80px;
-}
-
-#iphone-container .content {
-width: 100%;
-padding: 0;
+margin-top: 100px;
+box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
 }
 
 #installersOverlay {
@@ -135,14 +131,14 @@ font-weight: 600;
 .scarlet-button { background-color: #dc143c; color: black; }
 
 @media (max-width: 600px) {
-#installersChoices {
-flex-wrap: wrap;
-justify-content: center;
-}
-
 #iphone-container {
 width: 90%;
 height: 600px;
+}
+
+.step-button {
+font-size: 1em;
+padding: 10px 18px;
 }
 }
 </style>
