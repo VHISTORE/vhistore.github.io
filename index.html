@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>Vibe Hack iPA</title>
 <style>
 * {
@@ -11,16 +11,16 @@ margin: 0;
 padding: 0;
 }
 
-body {
+html, body {
+height: 100%;
+width: 100%;
+overflow: hidden;
 font-family: sans-serif;
 background-color: #000;
 color: #fff;
-overflow-x: hidden;
 display: flex;
 flex-direction: column;
-justify-content: center;
 align-items: center;
-min-height: 100vh;
 }
 
 header {
@@ -29,14 +29,11 @@ align-items: center;
 justify-content: center;
 padding: 10px;
 width: 100%;
-position: fixed;
-top: 0;
-left: 0;
-right: 0;
 background: rgba(0, 0, 0, 0.7);
-z-index: 10;
 border-bottom: 2px solid red;
 height: 60px;
+position: relative;
+z-index: 10;
 }
 
 .logo {
@@ -63,11 +60,12 @@ animation: gradientMove 5s ease-in-out infinite;
 .content {
 display: flex;
 flex-direction: column;
-justify-content: center;
 align-items: center;
+justify-content: center;
 text-align: center;
-padding: 40px 20px;
-margin-top: 120px;
+flex: 1;
+width: 100%;
+padding: 20px;
 }
 
 .step-button {
@@ -82,32 +80,20 @@ font-weight: 600;
 background: #444;
 }
 
-#installersOverlay {
-position: absolute;
-top: 200px; /* Сместил вниз, чтобы кнопки не перекрывали основной раздел */
-left: 0;
-right: 0;
-background: rgba(0, 0, 0, 0.7);
-z-index: 90;
+#installersContainer {
 display: none;
-justify-content: center;
-align-items: center;
-padding: 20px;
-margin-top: 20px;
-border-radius: 10px;
-}
-
-#installersChoices {
-display: flex;
-gap: 15px;
-justify-content: center;
+margin-top: 10px;
 flex-wrap: nowrap;
+gap: 10px;
+justify-content: center;
+flex-direction: row;
+flex-wrap: wrap;
 }
 
 .installer-button {
 border: none;
-padding: 8px 12px;
-font-size: 1em;
+padding: 10px 14px;
+font-size: 0.9em;
 border-radius: 8px;
 cursor: pointer;
 font-weight: 600;
@@ -117,16 +103,9 @@ font-weight: 600;
 .gbox-button { background-color: #32cd32; color: black; }
 .feather-button { background-color: #9370db; color: white; }
 .scarlet-button { background-color: #dc143c; color: black; }
-
-@media (max-width: 600px) {
-#installersChoices {
-flex-wrap: wrap;
-justify-content: center;
-}
-}
 </style>
 </head>
-<body>
+<body onclick="closeInstallersContainer(event)">
 <header>
 <h1 class="animated-title">Vibe Hack iPA</h1>
 <div class="logo"></div>
@@ -134,36 +113,40 @@ justify-content: center;
 
 <div class="content">
 <div class="step-button" onclick="openModal('certificate')">Получить сертификат</div>
-<div class="step-button" onclick="showInstallers()">Установщик IPA файлов</div>
+<div class="step-button" id="installerBtn" onclick="toggleInstallers(event)">Установщик IPA файлов</div>
 
-<!-- Место для кнопок установщиков -->
-<div id="installersOverlay" onclick="closeInstallersOverlay()">
-<div id="installersChoices" onclick="event.stopPropagation()">
+<div id="installersContainer">
 <button class="installer-button esign-button" onclick="openInstallerModal('ESign')">ESign</button>
 <button class="installer-button gbox-button" onclick="openInstallerModal('GBox')">GBox</button>
 <button class="installer-button feather-button" onclick="openInstallerModal('Feather')">Feather</button>
 <button class="installer-button scarlet-button" onclick="openInstallerModal('Scarlet')">Scarlet</button>
 </div>
 </div>
-</div>
 
 <script>
-function showInstallers() {
-// Показываем установщики сразу под кнопкой "Установщик IPA файлов"
-document.getElementById('installersOverlay').style.display = 'flex';
-}
-
-function closeInstallersOverlay() {
-document.getElementById('installersOverlay').style.display = 'none';
+function openModal(step) {
+alert(`Открыт раздел: ${step}`);
 }
 
 function openInstallerModal(type) {
 alert(`Инструкция для ${type} будет добавлена позже`);
 }
 
-function openModal(step) {
-alert(`Открыт раздел: ${step}`);
+function toggleInstallers(event) {
+event.stopPropagation(); // Чтобы не закрывало сразу после открытия
+const container = document.getElementById('installersContainer');
+container.style.display = container.style.display === 'flex' ? 'none' : 'flex';
+}
+
+function closeInstallersContainer(event) {
+const btn = document.getElementById('installerBtn');
+const container = document.getElementById('installersContainer');
+
+if (!btn.contains(event.target) && !container.contains(event.target)) {
+container.style.display = 'none';
+}
 }
 </script>
 </body>
 </html>
+
