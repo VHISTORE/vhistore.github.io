@@ -114,10 +114,55 @@ font-weight: 600;
 .feather-button { background-color: #9370db; color: white; }
 .scarlet-button { background-color: #dc143c; color: black; }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+header {
+flex-direction: column;
+align-items: flex-start;
+height: auto;
+}
+
+h1.animated-title {
+font-size: 1.5em;
+}
+
+.content {
+margin-top: 80px;
+}
+
+.step-button {
+font-size: 1em;
+padding: 10px 18px;
+}
+
 #installersChoices {
-flex-wrap: wrap;
-justify-content: center;
+flex-direction: column;
+gap: 12px;
+}
+
+.installer-button {
+font-size: 1em;
+padding: 10px 14px;
+}
+}
+
+@media (max-width: 480px) {
+h1.animated-title {
+font-size: 1.2em;
+}
+
+.step-button {
+font-size: 0.9em;
+padding: 8px 15px;
+}
+
+.installer-button {
+font-size: 0.9em;
+padding: 8px 12px;
+}
+
+#installersChoices {
+flex-direction: column;
+gap: 10px;
 }
 }
 </style>
