@@ -18,7 +18,6 @@ color: #fff;
 overflow-x: hidden;
 display: flex;
 flex-direction: column;
-justify-content: center;
 align-items: center;
 min-height: 100vh;
 }
@@ -27,16 +26,15 @@ header {
 display: flex;
 align-items: center;
 justify-content: center;
-padding: 10px;
+padding: 5px 15px;
+background: rgba(0, 0, 0, 0.7);
 width: 100%;
 position: fixed;
 top: 0;
-left: 0;
-right: 0;
-background: rgba(0, 0, 0, 0.7);
 z-index: 10;
-border-bottom: 2px solid red;
+text-align: center;
 height: 60px;
+border-bottom: 2px solid red;
 }
 
 .logo {
@@ -47,23 +45,30 @@ margin-left: 10px;
 h1.animated-title {
 font-size: 1.8em;
 font-weight: 700;
+letter-spacing: 2px;
+text-transform: uppercase;
 background: linear-gradient(90deg, #ff4500, #ff6347, #dc143c, #b22222, #ff4500);
-background-size: 300% 300%;
+background-size: 300%;
 -webkit-background-clip: text;
-color: transparent;
-animation: gradientMove 5s ease-in-out infinite;
+-webkit-text-fill-color: transparent;
+animation: gradientChange 5s ease-in-out infinite;
 }
 
-@keyframes gradientMove {
-0% { background-position: 0% 50%; }
-50% { background-position: 100% 50%; }
-100% { background-position: 0% 50%; }
+@keyframes gradientChange {
+0% {
+background-position: 0%;
+}
+50% {
+background-position: 100%;
+}
+100% {
+background-position: 0%;
+}
 }
 
 .content {
 display: flex;
 flex-direction: column;
-justify-content: center;
 align-items: center;
 text-align: center;
 padding: 40px 20px;
@@ -71,51 +76,100 @@ margin-top: 120px;
 }
 
 .step-button {
+display: inline-block;
 border: none;
 border-radius: 12px;
-padding: 12px 20px;
+padding: 14px 24px;
 font-size: 1.2em;
 margin: 10px;
 color: #fff;
 cursor: pointer;
 font-weight: 600;
+transition: transform 0.2s, background 0.3s;
 background: #444;
 }
 
+.step-button:hover {
+transform: scale(1.05);
+}
+
 #installersOverlay {
-position: fixed;
-inset: 0;
-background: transparent;
-z-index: 90;
+position: absolute;
+top: 100%;
+margin-top: 10px;
+background: rgba(255, 255, 255, 0.05);
+backdrop-filter: blur(8px);
+padding: 12px;
+border-radius: 16px;
 display: none;
-justify-content: center;
-align-items: center;
-padding: 20px;
-}
-
-#installersChoices {
-display: flex;
+flex-wrap: nowrap;
 gap: 8px;
+justify-content: center;
 }
 
-.installer-button {
+.installer-btn {
 border: none;
-padding: 8px 12px;
-font-size: 0.9em;
-border-radius: 8px;
-cursor: pointer;
+border-radius: 10px;
+padding: 10px 14px;
+font-size: 1em;
 font-weight: 600;
+cursor: pointer;
+white-space: nowrap;
 }
 
-.esign-button { background-color: #00bfff; }
-.gbox-button { background-color: #32cd32; color: black; }
-.feather-button { background-color: #9370db; }
-.scarlet-button { background-color: #dc143c; }
+.esign-button {
+background-color: #00bfff;
+color: #fff;
+}
+
+.gbox-button {
+background-color: #32cd32;
+color: #000;
+}
+
+.feather-button {
+background-color: #9370db;
+color: #fff;
+}
+
+.scarlet-button {
+background-color: #dc143c;
+color: #000;
+}
+
+.theme-toggle {
+position: fixed;
+bottom: 16px;
+left: 16px;
+width: 38px;
+height: 38px;
+border-radius: 50%;
+background: rgba(255,255,255,0.1);
+color: white;
+font-size: 18px;
+border: none;
+cursor: pointer;
+z-index: 10;
+}
 
 @media (max-width: 600px) {
-#installersChoices {
-flex-wrap: wrap;
-justify-content: center;
+.installer-btn {
+padding: 10px 12px;
+font-size: 0.9em;
+}
+
+header {
+flex-direction: column;
+height: auto;
+padding: 10px 15px;
+}
+
+.animated-title {
+font-size: 1.4em;
+}
+
+.logo {
+margin-top: 5px;
 }
 }
 </style>
@@ -128,33 +182,34 @@ justify-content: center;
 
 <div class="content">
 <div class="step-button" onclick="openModal('certificate')">Получить сертификат</div>
-<div class="step-button" onclick="showInstallers()">Установщик IPA файлов</div>
+<div class="step-button" onclick="toggleInstallers()">Установщик IPA файлов</div>
+
+<div id="installersOverlay">
+<button class="installer-btn esign-button" onclick="openInstaller('ESign')">ESign</button>
+<button class="installer-btn gbox-button" onclick="openInstaller('GBox')">GBox</button>
+<button class="installer-btn feather-button" onclick="openInstaller('Feather')">Feather</button>
+<button class="installer-btn scarlet-button" onclick="openInstaller('Scarlet')">Scarlet</button>
+</div>
 </div>
 
-<div id="installersOverlay" onclick="closeInstallersOverlay()">
-<div id="installersChoices" onclick="event.stopPropagation()">
-<button class="installer-button esign-button" onclick="openInstallerModal('ESign')">ESign</button>
-<button class="installer-button gbox-button" onclick="openInstallerModal('GBox')">GBox</button>
-<button class="installer-button feather-button" onclick="openInstallerModal('Feather')">Feather</button>
-<button class="installer-button scarlet-button" onclick="openInstallerModal('Scarlet')">Scarlet</button>
-</div>
-</div>
+<button class="theme-toggle" onclick="toggleTheme()">🌙</button>
 
 <script>
-function showInstallers() {
-document.getElementById('installersOverlay').style.display = 'flex';
+function toggleTheme() {
+document.body.classList.toggle('light-theme');
 }
 
-function closeInstallersOverlay() {
-document.getElementById('installersOverlay').style.display = 'none';
+function openModal(name) {
+alert("Раздел: " + name);
 }
 
-function openInstallerModal(type) {
-alert(`Инструкция для ${type} будет добавлена позже`);
+function openInstaller(name) {
+alert("Инструкция для " + name + " будет добавлена позже!");
 }
 
-function openModal(step) {
-alert(`Открыт раздел: ${step}`);
+function toggleInstallers() {
+const overlay = document.getElementById('installersOverlay');
+overlay.style.display = overlay.style.display === 'flex' ? 'none' : 'flex';
 }
 </script>
 </body>
