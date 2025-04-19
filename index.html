@@ -4,7 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Vibe Hack iPA</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700&display=swap">
 <style>
 * {
 box-sizing: border-box;
@@ -13,14 +12,13 @@ padding: 0;
 }
 
 body {
-font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 background-color: #000;
 color: #fff;
 overflow: hidden;
 display: flex;
 flex-direction: column;
 align-items: center;
-height: 100vh;
 }
 
 header {
@@ -31,6 +29,8 @@ padding: 10px;
 width: 100%;
 position: fixed;
 top: 0;
+left: 0;
+right: 0;
 background: rgba(0, 0, 0, 0.7);
 z-index: 10;
 border-bottom: 2px solid red;
@@ -38,56 +38,20 @@ height: 60px;
 }
 
 .logo {
-font-size: 26px;
-margin-right: 8px;
+font-size: 28px;
+margin-right: 10px;
 animation: blink 1.5s infinite;
 }
 
 @keyframes blink {
 0%, 100% { opacity: 1; }
-50% { opacity: 0.3; }
+50% { opacity: 0.2; }
 }
 
 h1.animated-title {
-font-size: 1.7em;
-font-weight: 600;
-color: red;
-line-height: 1;
-}
-
-.iphone-frame {
-margin-top: 80px;
-border: 2px solid red;
-border-radius: 40px;
-padding: 30px 20px 40px;
-position: relative;
-width: 280px;
-max-width: 90vw;
-height: 580px;
-display: flex;
-align-items: center;
-justify-content: center;
-flex-direction: column;
-}
-
-.notch {
-position: absolute;
-top: -10px;
-left: 50%;
-transform: translateX(-50%);
-width: 110px;
-height: 26px;
-background: #000;
-border-radius: 14px;
-}
-
-.fps-counter {
-position: absolute;
-top: 30px;
-left: 20px;
-font-size: 0.85em;
-font-weight: bold;
-background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet, red);
+font-size: 1.8em;
+font-weight: 700;
+background: linear-gradient(90deg, #ff4500, #ff6347, #dc143c, #b22222, #ff4500);
 background-size: 300% 300%;
 -webkit-background-clip: text;
 color: transparent;
@@ -100,20 +64,46 @@ animation: gradientMove 5s ease-in-out infinite;
 100% { background-position: 0% 50%; }
 }
 
+.iphone-frame {
+margin-top: 100px;
+border: 2px solid red;
+border-radius: 40px;
+padding: 40px 20px 60px;
+position: relative;
+width: 320px;
+max-width: 90vw;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.notch {
+position: absolute;
+top: -2px;
+left: 50%;
+transform: translateX(-50%);
+width: 120px;
+height: 20px;
+background: black;
+border: 2px solid red;
+border-top-left-radius: 20px;
+border-top-right-radius: 20px;
+}
+
 .content {
 display: flex;
 flex-direction: column;
+justify-content: center;
 align-items: center;
 text-align: center;
-gap: 12px;
 }
 
 .step-button {
 border: 2px solid red;
-border-radius: 10px;
-padding: 10px 12px;
-font-size: 1em;
-min-width: 120px;
+border-radius: 12px;
+padding: 12px 20px;
+font-size: 1.2em;
+margin: 10px;
 color: #fff;
 cursor: pointer;
 font-weight: 600;
@@ -123,17 +113,16 @@ background: transparent;
 .installers {
 margin-top: 10px;
 display: none;
-flex-direction: row;
-flex-wrap: nowrap;
 justify-content: center;
-gap: 8px;
-flex-shrink: 0;
+gap: 10px;
+flex-wrap: nowrap;
+flex-direction: row;
 }
 
 .installer-button {
 border: none;
-padding: 6px 10px;
-font-size: 0.85em;
+padding: 8px 12px;
+font-size: 0.9em;
 border-radius: 8px;
 cursor: pointer;
 font-weight: 600;
@@ -144,20 +133,30 @@ font-weight: 600;
 .feather-button { background-color: #9370db; color: white; }
 .scarlet-button { background-color: #dc143c; color: black; }
 
+#fps {
+position: absolute;
+top: 120px;
+left: 10px;
+font-size: 1.2em;
+color: #ff4500;
+font-weight: 700;
+animation: rainbow 3s linear infinite;
+}
+
+@keyframes rainbow {
+0% { color: red; }
+14% { color: orange; }
+28% { color: yellow; }
+42% { color: green; }
+57% { color: blue; }
+71% { color: indigo; }
+85% { color: violet; }
+100% { color: red; }
+}
+
 @media (max-width: 600px) {
-.iphone-frame {
-transform: scale(0.95);
-margin-top: 90px;
-}
-
-.step-button {
-font-size: 0.9em;
-padding: 8px 10px;
-}
-
-.installer-button {
-font-size: 0.75em;
-padding: 4px 8px;
+.installers {
+flex-wrap: wrap;
 }
 }
 </style>
@@ -168,9 +167,8 @@ padding: 4px 8px;
 <h1 class="animated-title">Vibe Hack iPA</h1>
 </header>
 
-<div class="iphone-frame" id="iphoneFrame">
+<div class="iphone-frame">
 <div class="notch"></div>
-<div class="fps-counter" id="fpsCounter">FPS: 60</div>
 <div class="content">
 <div class="step-button" onclick="openModal('certificate')">Получить сертификат</div>
 <div class="step-button" onclick="toggleInstallers()">Установщик IPA файлов</div>
@@ -182,6 +180,8 @@ padding: 4px 8px;
 </div>
 </div>
 </div>
+
+<div id="fps">FPS: 60</div>
 
 <script>
 function openModal(step) {
@@ -196,33 +196,6 @@ installers.style.display = installers.style.display === 'flex' ? 'none' : 'flex'
 function openInstallerModal(name) {
 alert(`Инструкция для ${name} будет добавлена позже`);
 }
-
-document.body.addEventListener('click', function(e) {
-const installers = document.getElementById('installersChoices');
-const target = e.target;
-if (
-installers.style.display === 'flex' &&
-!target.classList.contains('step-button') &&
-!target.classList.contains('installer-button')
-) {
-installers.style.display = 'none';
-}
-});
-
-// FPS Simulation
-let lastFrameTime = performance.now();
-let fpsDisplay = document.getElementById("fpsCounter");
-
-function updateFPS() {
-const now = performance.now();
-const delta = now - lastFrameTime;
-lastFrameTime = now;
-const fps = Math.round(1000 / delta);
-fpsDisplay.textContent = `FPS: ${fps}`;
-requestAnimationFrame(updateFPS);
-}
-
-requestAnimationFrame(updateFPS);
 </script>
 </body>
 </html>
