@@ -20,7 +20,7 @@ height: 100vh;
 display: flex;
 justify-content: center; /* Центрируем контент по горизонтали */
 align-items: flex-start; /* Поднимем айфон чуть ниже шапки */
-padding-top: 50px; /* Поднимем айфон чуть ниже шапки */
+padding-top: 50px; /* Поднимем айфон чуть выше шапки */
 }
 
 header {
@@ -106,19 +106,19 @@ width: 100%;
 .step-button {
 border: 2px solid red;
 border-radius: 12px;
-padding: 10px 14px; /* Сделаем кнопки удобнее */
+padding: 8px 12px; /* Сделаем кнопки удобнее */
 font-size: 1em;
 margin: 6px;
 color: #fff;
 cursor: pointer;
 font-weight: 600;
 background: transparent;
-width: 85%; /* Уменьшим ширину кнопок */
+width: 80%; /* Уменьшим ширину кнопок */
 }
 
 .installers {
 margin-top: 6px;
-display: flex;
+display: none; /* Скрыть кнопки установщиков по умолчанию */
 justify-content: center; /* Выровняли кнопки в одну линию */
 gap: 6px;
 flex-wrap: nowrap;
