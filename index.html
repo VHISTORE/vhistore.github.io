@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
@@ -167,7 +167,7 @@
 
     @media (max-width: 480px) {
       .iphone-frame {
-        width: 67vw;  /* Увеличиваем ширину для мобильных устройств */
+        width: 67vw;
         height: 550px;
         margin-top: 40px;
       }
@@ -180,7 +180,6 @@
       }
     }
 
-    /* Модальное окно */
     .modal {
       position: fixed;
       top: 0; left: 0;
@@ -213,6 +212,11 @@
       max-height: 80vh;
     }
 
+    .modal-content ol {
+      padding-left: 20px;
+      padding-right: 10px;
+    }
+
     .modal-close {
       position: absolute;
       top: 8px;
@@ -233,7 +237,6 @@
       }
     }
 
-    /* Светлая тема */
     body.light {
       background-color: #f0f0f0;
       color: #111;
@@ -278,7 +281,6 @@
     </div>
   </div>
 
-  <!-- Модалка -->
   <div id="modal" class="modal hidden" onclick="closeModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
       <span id="modalClose" class="modal-close" onclick="closeModal(event)">×</span>
@@ -300,7 +302,6 @@
       const delta = timestamp - lastTime;
       fps = Math.round(1000 / delta);
       document.getElementById('fpsDisplay').textContent = `FPS: ${fps}`;
-
       lastTime = timestamp;
       requestAnimationFrame(calculateFPS);
     }
@@ -318,8 +319,6 @@
     function openModal(content) {
       const modal = document.getElementById("modal");
       const body = document.getElementById("modalBody");
-
-      // Скрыть кнопку смены темы при открытии модалки
       document.getElementById('themeToggle').style.display = 'none';
 
       if (content === "certificate") {
@@ -346,16 +345,9 @@
     }
 
     function closeModal(event) {
-      if (event) {
-        event.stopPropagation();
-      }
-      const modal = document.getElementById("modal");
-      const themeButton = document.getElementById('themeToggle');
-
-      // Вернуть кнопку смены темы
-      themeButton.style.display = 'block';
-
-      modal.classList.add('hidden');
+      if (event) event.stopPropagation();
+      document.getElementById("modal").classList.add("hidden");
+      document.getElementById('themeToggle').style.display = 'block';
     }
 
     document.getElementById("themeToggle").addEventListener("click", () => {
@@ -366,4 +358,3 @@
   </script>
 </body>
 </html>
-
