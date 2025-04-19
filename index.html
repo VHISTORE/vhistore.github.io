@@ -83,15 +83,17 @@ background: #444;
 }
 
 #installersOverlay {
-position: fixed;
-inset: 0;
+position: absolute;
+top: 120px; /* Отступ от верхней части экрана, чтобы установщики шли под кнопкой */
+left: 0;
+right: 0;
 background: transparent;
 z-index: 90;
 display: none;
 justify-content: center;
 align-items: center;
 padding: 20px;
-margin-top: 80px; /* Чтобы установщики не перекрывали разделы */
+margin-top: 20px; /* Чтобы не перекрывать другие элементы */
 }
 
 #installersChoices {
