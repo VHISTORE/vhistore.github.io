@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Vibe Hack iPA</title>
 <style>
 * {
@@ -13,13 +13,13 @@ padding: 0;
 
 html, body {
 height: 100%;
-width: 100%;
 overflow: hidden;
 font-family: sans-serif;
 background-color: #000;
 color: #fff;
 display: flex;
 flex-direction: column;
+justify-content: center;
 align-items: center;
 }
 
@@ -29,16 +29,25 @@ align-items: center;
 justify-content: center;
 padding: 10px;
 width: 100%;
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
 background: rgba(0, 0, 0, 0.7);
+z-index: 10;
 border-bottom: 2px solid red;
 height: 60px;
-position: relative;
-z-index: 10;
 }
 
 .logo {
 font-size: 28px;
-margin-left: 10px;
+margin-right: 10px;
+animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+0%, 100% { opacity: 1; }
+50% { opacity: 0.3; }
 }
 
 h1.animated-title {
@@ -60,16 +69,14 @@ animation: gradientMove 5s ease-in-out infinite;
 .content {
 display: flex;
 flex-direction: column;
-align-items: center;
 justify-content: center;
+align-items: center;
 text-align: center;
-flex: 1;
-width: 100%;
-padding: 20px;
+margin-top: 100px;
 }
 
 .step-button {
-border: none;
+border: 2px solid red;
 border-radius: 12px;
 padding: 12px 20px;
 font-size: 1.2em;
@@ -77,22 +84,20 @@ margin: 10px;
 color: #fff;
 cursor: pointer;
 font-weight: 600;
-background: #444;
+background: #000;
 }
 
-#installersContainer {
-display: none;
+#installersChoicesWrapper {
 margin-top: 10px;
-flex-wrap: nowrap;
-gap: 10px;
+display: none;
 justify-content: center;
-flex-direction: row;
+gap: 8px;
 flex-wrap: wrap;
 }
 
 .installer-button {
 border: none;
-padding: 10px 14px;
+padding: 8px 12px;
 font-size: 0.9em;
 border-radius: 8px;
 cursor: pointer;
@@ -103,19 +108,26 @@ font-weight: 600;
 .gbox-button { background-color: #32cd32; color: black; }
 .feather-button { background-color: #9370db; color: white; }
 .scarlet-button { background-color: #dc143c; color: black; }
+
+@media (max-width: 600px) {
+#installersChoicesWrapper {
+flex-direction: column;
+align-items: center;
+}
+}
 </style>
 </head>
-<body onclick="closeInstallersContainer(event)">
+<body>
 <header>
-<h1 class="animated-title">Vibe Hack iPA</h1>
 <div class="logo"></div>
+<h1 class="animated-title">Vibe Hack iPA</h1>
 </header>
 
 <div class="content">
 <div class="step-button" onclick="openModal('certificate')">Получить сертификат</div>
-<div class="step-button" id="installerBtn" onclick="toggleInstallers(event)">Установщик IPA файлов</div>
+<div class="step-button" onclick="toggleInstallers()">Установщик IPA файлов</div>
 
-<div id="installersContainer">
+<div id="installersChoicesWrapper" onclick="event.stopPropagation()">
 <button class="installer-button esign-button" onclick="openInstallerModal('ESign')">ESign</button>
 <button class="installer-button gbox-button" onclick="openInstallerModal('GBox')">GBox</button>
 <button class="installer-button feather-button" onclick="openInstallerModal('Feather')">Feather</button>
@@ -124,27 +136,21 @@ font-weight: 600;
 </div>
 
 <script>
-function openModal(step) {
-alert(`Открыт раздел: ${step}`);
+document.body.addEventListener('click', () => {
+document.getElementById('installersChoicesWrapper').style.display = 'none';
+});
+
+function toggleInstallers() {
+const block = document.getElementById('installersChoicesWrapper');
+block.style.display = block.style.display === 'flex' ? 'none' : 'flex';
 }
 
 function openInstallerModal(type) {
 alert(`Инструкция для ${type} будет добавлена позже`);
 }
 
-function toggleInstallers(event) {
-event.stopPropagation(); // Чтобы не закрывало сразу после открытия
-const container = document.getElementById('installersContainer');
-container.style.display = container.style.display === 'flex' ? 'none' : 'flex';
-}
-
-function closeInstallersContainer(event) {
-const btn = document.getElementById('installerBtn');
-const container = document.getElementById('installersContainer');
-
-if (!btn.contains(event.target) && !container.contains(event.target)) {
-container.style.display = 'none';
-}
+function openModal(step) {
+alert(`Открыт раздел: ${step}`);
 }
 </script>
 </body>
