@@ -67,6 +67,8 @@ animation: gradientMove 5s ease-in-out infinite;
 margin-top: 80px;
 width: 270px; /* Увеличен размер айфона */
 height: 570px; /* Увеличен размер айфона */
+max-width: 95vw; /* Ограничение по ширине */
+max-height: 95vh; /* Ограничение по высоте */
 border: 2px solid red;
 border-radius: 40px;
 position: relative;
@@ -138,6 +140,14 @@ font-weight: 600;
 @media (max-height: 600px) {
 .iphone-frame {
 transform: scale(0.85);
+}
+}
+
+/* Мобильная оптимизация */
+@media (max-width: 480px) {
+.iphone-frame {
+width: 230px; /* Уменьшаем айфон на маленьких экранах */
+height: 500px;
 }
 }
 </style>
