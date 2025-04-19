@@ -18,9 +18,9 @@ color: #fff;
 overflow: hidden;
 height: 100vh;
 display: flex;
-justify-content: center; /* Центрирование контента */
-align-items: flex-start; /* Поднимем айфон выше */
-padding-top: 20px; /* Дополнительное пространство сверху */
+justify-content: center; /* Центрируем контент по горизонтали */
+align-items: flex-start; /* Поднимем айфон чуть ниже шапки */
+padding-top: 50px; /* Поднимем айфон чуть ниже шапки */
 }
 
 header {
@@ -65,9 +65,9 @@ animation: gradientMove 5s ease-in-out infinite;
 }
 
 .iphone-frame {
-margin-top: 50px; /* Уменьшили отступ сверху */
-width: 270px; /* Увеличен размер айфона */
-height: 570px; /* Увеличен размер айфона */
+margin-top: 20px; /* Подняли айфон ниже шапки */
+width: 270px; /* Увеличили размер айфона */
+height: 570px; /* Увеличили размер айфона */
 max-width: 95vw; /* Ограничение по ширине */
 max-height: 95vh; /* Ограничение по высоте */
 border: 2px solid red;
@@ -83,7 +83,7 @@ background: black;
 
 .notch {
 position: absolute;
-top: 12px; /* Уменьшена челка */
+top: 12px; /* Уменьшили челку */
 left: 50%;
 transform: translateX(-50%);
 width: 90px;
@@ -118,10 +118,10 @@ width: 85%; /* Уменьшим ширину кнопок */
 
 .installers {
 margin-top: 6px;
-display: none;
-justify-content: center;
+display: flex;
+justify-content: center; /* Выровняли кнопки в одну линию */
 gap: 6px;
-flex-wrap: nowrap; /* Кнопки в одну линию */
+flex-wrap: nowrap;
 }
 
 .installer-button {
@@ -149,12 +149,16 @@ transform: scale(0.85);
 .iphone-frame {
 width: 230px; /* Уменьшаем айфон на маленьких экранах */
 height: 500px;
-margin-top: 20px; /* Поднимем айфон выше на экранах с малой высотой */
+margin-top: 40px; /* Поднимем айфон чуть выше */
 }
 
 .step-button {
 padding: 8px 12px;
 font-size: 0.9em; /* Немного уменьшены кнопки */
+}
+
+.installers {
+gap: 4px; /* Сокращаем промежуток между кнопками */
 }
 }
 </style>
