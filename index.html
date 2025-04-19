@@ -15,7 +15,8 @@ body {
 font-family: sans-serif;
 background-color: #000;
 color: #fff;
-overflow-x: hidden;
+overflow: hidden;
+height: 100vh;
 display: flex;
 flex-direction: column;
 align-items: center;
@@ -29,8 +30,6 @@ padding: 10px;
 width: 100%;
 position: fixed;
 top: 0;
-left: 0;
-right: 0;
 background: rgba(0, 0, 0, 0.7);
 z-index: 10;
 border-bottom: 2px solid red;
@@ -65,32 +64,52 @@ animation: gradientMove 5s ease-in-out infinite;
 }
 
 .iphone-frame {
-margin-top: 100px;
-width: 280px;
-height: 600px;
+margin-top: 80px;
+width: 240px;
+height: 500px;
 border: 2px solid red;
 border-radius: 40px;
 position: relative;
-padding: 50px 15px 40px;
+padding: 30px 10px;
 display: flex;
 flex-direction: column;
+justify-content: center;
 align-items: center;
-justify-content: flex-start;
 }
 
 .notch {
 position: absolute;
-top: -1px;
+top: -2px;
 left: 50%;
 transform: translateX(-50%);
 width: 90px;
-height: 24px;
+height: 26px;
 background: black;
 border: 2px solid red;
 border-top-left-radius: 18px;
 border-top-right-radius: 18px;
 border-bottom-left-radius: 10px;
 border-bottom-right-radius: 10px;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 6px;
+}
+
+.camera, .speaker {
+background: #222;
+border-radius: 50%;
+}
+
+.camera {
+width: 8px;
+height: 8px;
+}
+
+.speaker {
+width: 30px;
+height: 6px;
+border-radius: 3px;
 }
 
 .content {
@@ -105,27 +124,28 @@ width: 100%;
 .step-button {
 border: 2px solid red;
 border-radius: 10px;
-padding: 10px 14px;
-font-size: 1em;
-margin: 8px;
+padding: 8px 10px;
+font-size: 0.95em;
+margin: 6px;
 color: #fff;
 cursor: pointer;
 font-weight: 600;
 background: transparent;
+width: 90%;
 }
 
 .installers {
-margin-top: 8px;
+margin-top: 6px;
 display: none;
 justify-content: center;
-gap: 8px;
+gap: 6px;
 flex-wrap: wrap;
 }
 
 .installer-button {
 border: none;
-padding: 6px 10px;
-font-size: 0.8em;
+padding: 5px 8px;
+font-size: 0.75em;
 border-radius: 6px;
 cursor: pointer;
 font-weight: 600;
@@ -136,9 +156,9 @@ font-weight: 600;
 .feather-button { background-color: #9370db; color: white; }
 .scarlet-button { background-color: #dc143c; color: black; }
 
-@media (max-width: 600px) {
-.installers {
-flex-wrap: wrap;
+@media (max-height: 600px) {
+.iphone-frame {
+transform: scale(0.85);
 }
 }
 </style>
@@ -150,7 +170,10 @@ flex-wrap: wrap;
 </header>
 
 <div class="iphone-frame">
-<div class="notch"></div>
+<div class="notch">
+<div class="camera"></div>
+<div class="speaker"></div>
+</div>
 <div class="content">
 <div class="step-button" onclick="openModal('certificate')">Получить сертификат</div>
 <div class="step-button" onclick="toggleInstallers()">Установщик IPA файлов</div>
