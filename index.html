@@ -12,7 +12,7 @@
     }
 
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: Arial, sans-serif;
       background-color: #000;
       color: #fff;
       overflow-x: hidden;
@@ -51,7 +51,28 @@
       text-align: center;
       letter-spacing: 2px;
       text-transform: uppercase;
-      animation: slideIn 1s ease-out;
+      animation: slideIn 1s ease-out, gradientChange 5s ease-in-out infinite;
+      background: linear-gradient(90deg, #ff4500, #ff6347);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    @keyframes gradientChange {
+      0% {
+        background: linear-gradient(90deg, #ff4500, #ff6347);
+      }
+      25% {
+        background: linear-gradient(90deg, #ff6347, #dc143c);
+      }
+      50% {
+        background: linear-gradient(90deg, #dc143c, #b22222);
+      }
+      75% {
+        background: linear-gradient(90deg, #b22222, #ff4500);
+      }
+      100% {
+        background: linear-gradient(90deg, #ff4500, #ff6347);
+      }
     }
 
     @keyframes slideIn {
@@ -88,6 +109,66 @@
     .step-button:hover {
       transform: scale(1.05);
     }
+
+    .modal, #installersOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      z-index: 99;
+      overflow-y: auto;
+      padding: 40px 20px;
+    }
+
+    .modal-content, #installersChoices {
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      margin: auto;
+      padding: 15px;
+      position: relative;
+      backdrop-filter: blur(8px);
+      color: white;
+    }
+
+    .close {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      font-size: 24px;
+      color: #aaa;
+      cursor: pointer;
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .nav-buttons button {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .nav-buttons button:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .installer-button {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      padding: 10px 15px;
+      border-radius: 10px;
+      color: #fff;
+      margin: 5px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -97,8 +178,51 @@
   </header>
 
   <div class="content">
-    <div class="step-button" onclick="alert('Скоро будет доступно!')">Получить сертификат</div>
-    <div class="step-button" onclick="alert('Установщики скоро появятся')">Установщик IPA файлов</div>
+    <div class="step-button" onclick="openModal()">Получить сертификат</div>
+    <div class="step-button" onclick="showInstallers()">Установщик IPA файлов</div>
   </div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal" onclick="closeModal(event)">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">×</span>
+      <h2>Инструкция</h2>
+      <p>Здесь будет инструкция.</p>
+      <div class="nav-buttons">
+        <button onclick="alert('Назад')">Назад</button>
+        <button onclick="alert('Далее')">Далее</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Installers -->
+  <div id="installersOverlay" onclick="closeInstallersOverlay()">
+    <div id="installersChoices" onclick="event.stopPropagation()">
+      <button class="installer-button" onclick="alert('ESign')">ESign</button>
+      <button class="installer-button" onclick="alert('GBox')">GBox</button>
+      <button class="installer-button" onclick="alert('Feather')">Feather</button>
+      <button class="installer-button" onclick="alert('Scarlet')">Scarlet</button>
+    </div>
+  </div>
+
+  <script>
+    function openModal() {
+      document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal(event) {
+      if (event.target === document.getElementById('modal') || event.target.classList.contains('close')) {
+        document.getElementById('modal').style.display = 'none';
+      }
+    }
+
+    function showInstallers() {
+      document.getElementById('installersOverlay').style.display = 'flex';
+    }
+
+    function closeInstallersOverlay() {
+      document.getElementById('installersOverlay').style.display = 'none';
+    }
+  </script>
 </body>
 </html>
