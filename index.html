@@ -209,6 +209,8 @@
       font-size: 1em;
       animation: slideUp 0.4s ease;
       position: relative;
+      overflow-y: auto;
+      max-height: 80vh;
     }
 
     .modal-close {
@@ -317,6 +319,9 @@
       const modal = document.getElementById("modal");
       const body = document.getElementById("modalBody");
 
+      // Скрыть кнопку смены темы при открытии модалки
+      document.getElementById('themeToggle').style.display = 'none';
+
       if (content === "certificate") {
         body.innerHTML = `
           <h3>Получить сертификат</h3>
@@ -348,6 +353,9 @@
     function closeModal(event) {
       event.stopPropagation();
       document.getElementById("modal").classList.add("hidden");
+
+      // Показать кнопку смены темы после закрытия модалки
+      document.getElementById('themeToggle').style.display = 'block';
     }
 
     document.getElementById('themeToggle').addEventListener('click', () => {
