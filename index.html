@@ -2,142 +2,350 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vibe Hack iPA</title>
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #0d0d0d;
-      color: white;
+      padding: 0;
     }
-    .container {
-      padding: 20px;
-      max-width: 600px;
-      margin: 0 auto;
+
+    body {
+      font-family: sans-serif;
+      background-color: #000;
+      color: #fff;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 50px;
+      transition: background-color 0.3s, color 0.3s;
     }
-    h1 {
-      text-align: center;
-      font-size: 2em;
-      margin-bottom: 1em;
-    }
-    .button {
-      display: block;
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
       width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      background-color: #ff1744;
-      color: white;
-      text-align: center;
-      border: none;
-      border-radius: 10px;
-      font-size: 1em;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .button:hover {
-      background-color: #ff4569;
-    }
-    .modal {
       position: fixed;
       top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.8);
-      display: none;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 10;
+      border-bottom: 2px solid red;
+      height: 60px;
+    }
+
+    .logo {
+      font-size: 24px;
+      margin-right: 10px;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    h1.animated-title {
+      font-size: 1.6em;
+      font-weight: 700;
+      background: linear-gradient(90deg, #ff4500, #ff6347, #dc143c, #b22222, #ff4500);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: gradientMove 5s ease-in-out infinite;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .iphone-frame {
+      margin-top: 20px;
+      width: 95vw;
+      max-width: 500px;
+      height: 620px;
+      max-height: 95vh;
+      border: 2px solid red;
+      border-radius: 40px;
+      position: relative;
+      padding: 30px 10px;
+      display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      z-index: 20;
-      padding: 20px;
+      background: black;
     }
+
+    .notch {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90px;
+      height: 22px;
+      background: black;
+      border: 2px solid red;
+      border-radius: 15px;
+      z-index: 5;
+    }
+
+    .fps-display {
+      position: absolute;
+      top: 28px;
+      left: 10px;
+      font-size: 12px;
+      color: #ff0;
+      z-index: 10;
+      font-weight: bold;
+      animation: rainbowMove 3s linear infinite;
+    }
+
+    @keyframes rainbowMove {
+      0% { color: red; }
+      14% { color: orange; }
+      28% { color: yellow; }
+      42% { color: green; }
+      57% { color: blue; }
+      71% { color: indigo; }
+      85% { color: violet; }
+      100% { color: red; }
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+    }
+
+    .step-button {
+      border: 2px solid red;
+      border-radius: 12px;
+      padding: 8px 12px;
+      font-size: 1.1em;
+      margin: 6px;
+      color: #fff;
+      cursor: pointer;
+      font-weight: 600;
+      background: transparent;
+      width: 85%;
+    }
+
+    .installers {
+      margin-top: 6px;
+      display: none;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: nowrap;
+    }
+
+    .installer-button {
+      border: none;
+      padding: 5px 8px;
+      font-size: 0.75em;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .esign-button { background-color: #00bfff; color: white; }
+    .gbox-button { background-color: #32cd32; color: black; }
+    .feather-button { background-color: #9370db; color: white; }
+    .scarlet-button { background-color: #dc143c; color: black; }
+
+    @media (max-height: 600px) {
+      .iphone-frame { transform: scale(0.85); }
+    }
+
+    @media (max-width: 480px) {
+      .iphone-frame {
+        width: 67vw;
+        height: 550px;
+        margin-top: 40px;
+      }
+      .step-button {
+        padding: 8px 12px;
+        font-size: 0.9em;
+      }
+      .installers {
+        gap: 4px;
+      }
+    }
+
+    /* Модальное окно */
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 15;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
     .modal-content {
-      background: #111;
+      background-color: #111;
+      border: 2px solid red;
       padding: 20px;
       border-radius: 16px;
-      max-width: 400px;
-      width: 90%;
-      color: #fff;
-      border: 2px solid red;
-      box-shadow: 0 0 20px rgba(255,0,0,0.3);
-      font-size: 0.95em;
-    }
-    .modal-content h2 {
-      font-size: 1.3em;
-      margin-bottom: 12px;
-    }
-    .modal-content ol {
-      padding-left: 18px;
-      margin-bottom: 16px;
-    }
-    .modal-content li {
-      margin-bottom: 10px;
-      line-height: 1.4;
-    }
-    .modal-content code {
-      background: #222;
-      padding: 6px 10px;
-      border-radius: 6px;
-      display: block;
-      margin-top: 6px;
-      font-size: 0.85em;
-    }
-    .modal-content button {
-      padding: 8px 16px;
-      border-radius: 8px;
-      border: none;
-      background: red;
+      max-width: 90%;
+      width: 320px;
       color: white;
-      font-weight: bold;
+      font-size: 1em;
+      animation: slideUp 0.4s ease;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 8px;
+      right: 14px;
+      font-size: 1.5em;
       cursor: pointer;
+      color: red;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* Светлая тема */
+    body.light {
+      background-color: #f0f0f0;
+      color: #111;
+    }
+
+    body.light .modal-content {
+      background-color: #fff;
+      color: #000;
+      border: 2px solid #555;
+    }
+
+    body.light .step-button {
+      border-color: #555;
+      color: #000;
+    }
+
+    body.light .installers button {
+      filter: brightness(0.95);
     }
   </style>
 </head>
-<body>
-  <div class="container">
-    <h1>Vibe Hack iPA</h1>
-    <button class="button" onclick="openModal('certificate')">Получить сертификат</button>
+<body onclick="closeInstallers()">
+  <header>
+    <div class="logo"></div>
+    <h1 class="animated-title">Vibe Hack iPA</h1>
+  </header>
+
+  <button id="themeToggle" style="position: fixed; top: 70px; right: 20px; z-index: 20;">🌙</button>
+
+  <div class="iphone-frame">
+    <div class="notch"></div>
+    <div class="fps-display" id="fpsDisplay">FPS: 0</div>
+    <div class="content">
+      <div class="step-button" onclick="openModal('certificate')">Получить сертификат</div>
+      <div class="step-button" onclick="toggleInstallers(event)">Установщик IPA файлов</div>
+      <div id="installersChoices" class="installers">
+        <button class="installer-button esign-button" onclick="openModal('ESign')">ESign</button>
+        <button class="installer-button gbox-button" onclick="openModal('GBox')">GBox</button>
+        <button class="installer-button feather-button" onclick="openModal('Feather')">Feather</button>
+        <button class="installer-button scarlet-button" onclick="openModal('Scarlet')">Scarlet</button>
+      </div>
+    </div>
   </div>
 
-  <!-- Модальное окно "Получить сертификат" -->
-  <div id="certificateModal" class="modal" onclick="closeModal(event)">
+  <!-- Модалка -->
+  <div id="modal" class="modal hidden" onclick="closeModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
-      <h2>Получение сертификата</h2>
-      <ol>
-        <li>Откройте Telegram-бот <b>UDiD_Bot</b> и нажмите <b>Старт</b>.</li>
-        <li>Выберите <b>Получить UDiD</b> → <b>Get UDiD</b>.</li>
-        <li>В браузере нажмите <b>Разрешить</b> → <b>Закрыть</b>.</li>
-        <li>Перейдите в <b>Настройки</b> → <b>Профиль загружен</b>.</li>
-        <li>Нажмите <b>Установить</b>, введите код и подтвердите установку.</li>
-        <li>После установки вас вернёт в бот — вы получите сообщение с вашим UDID:
-          <code>UDID: 00008101-001E5C1A36C0001E
-DEVICE: iPhone 12 Pro</code>
-        </li>
-        <li>Выберите <b>Статус UDiD</b> и вставьте только ваш UDID (без других символов).</li>
-        <li>Нажмите <b>Получить Сертификат</b> → <b>ОК</b>.</li>
-        <li>Через 5 секунд бот пришлёт 2 файла сертификата.</li>
-        <li>Сохраните оба файла на ваше устройство.</li>
-      </ol>
-      <button onclick="closeCertificateModal()">Закрыть</button>
+      <span id="modalClose" class="modal-close" onclick="closeModal(event)">×</span>
+      <div id="modalBody"></div>
     </div>
   </div>
 
   <script>
-    function openModal(step) {
-      if (step === 'certificate') {
-        document.getElementById('certificateModal').style.display = 'flex';
+    let lastTime = 0;
+    let fps = 0;
+
+    function calculateFPS(timestamp) {
+      if (lastTime === 0) {
+        lastTime = timestamp;
+        requestAnimationFrame(calculateFPS);
+        return;
       }
+
+      const delta = timestamp - lastTime;
+      fps = Math.round(1000 / delta);
+      document.getElementById('fpsDisplay').textContent = `FPS: ${fps}`;
+
+      lastTime = timestamp;
+      requestAnimationFrame(calculateFPS);
     }
 
-    function closeCertificateModal() {
-      document.getElementById('certificateModal').style.display = 'none';
+    function toggleInstallers(event) {
+      event.stopPropagation();
+      const installers = document.getElementById('installersChoices');
+      installers.style.display = installers.style.display === 'flex' ? 'none' : 'flex';
     }
 
-    function closeModal(event) {
-      if (event.target.classList.contains('modal')) {
-        event.target.style.display = 'none';
-      }
+    function closeInstallers() {
+      const installers = document.getElementById('installersChoices');
+      installers.style.display = 'none';
     }
+
+    function openModal(content) {
+      const modal = document.getElementById("modal");
+      const body = document.getElementById("modalBody");
+
+      if (content === "certificate") {
+        body.innerHTML = `
+          <h3>Получить сертификат</h3>
+          <p>Сертификат можно получить через AltStore, Sideloadly или через наш сервис с моментальной выдачей. Подробнее — в Telegram.</p>
+        `;
+      } else {
+        body.innerHTML = `
+          <h3>${content}</h3>
+          <p>Инструкция для ${content} будет добавлена позже. Следите за обновлениями!</p>
+        `;
+      }
+
+      modal.classList.remove("hidden");
+    }
+
+    function closeModal() {
+      document.getElementById("modal").classList.add("hidden");
+    }
+
+    // Переключение темы
+    const toggleBtn = document.getElementById("themeToggle");
+    toggleBtn.addEventListener("click", () => {
+      document.body.classList.toggle("light");
+      toggleBtn.textContent = document.body.classList.contains("light") ? "☀️" : "🌙";
+    });
+
+    // Старт FPS
+    requestAnimationFrame(calculateFPS);
   </script>
 </body>
 </html>
