@@ -96,12 +96,22 @@ z-index: 5;
 
 .fps-display {
 position: absolute;
-top: 15px; /* Подняли на 15px, теперь ближе к челке */
+top: 28px; /* Подняли счетчик FPS на уровень нижней части челки */
 left: 10px;
 font-size: 12px; /* Уменьшили размер для лучшего восприятия */
 color: #ff0;
 z-index: 10;
 font-weight: bold;
+background: linear-gradient(90deg, violet, indigo, blue, green, yellow, orange, red); /* Радужный градиент */
+-webkit-background-clip: text;
+color: transparent;
+animation: rainbowMove 3s ease-in-out infinite;
+}
+
+@keyframes rainbowMove {
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
 }
 
 .content {
