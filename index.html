@@ -15,12 +15,13 @@ body {
 font-family: sans-serif;
 background-color: #000;
 color: #fff;
-overflow: hidden;
-height: 100vh;
+overflow-x: hidden;
+overflow-y: auto;
 display: flex;
-justify-content: center;
-align-items: flex-start;
-padding-top: 50px;
+flex-direction: column;
+align-items: center;
+min-height: 100vh;
+position: relative;
 }
 
 header {
@@ -31,6 +32,8 @@ padding: 10px;
 width: 100%;
 position: fixed;
 top: 0;
+left: 0;
+right: 0;
 background: rgba(0, 0, 0, 0.7);
 z-index: 10;
 border-bottom: 2px solid red;
@@ -38,7 +41,7 @@ height: 60px;
 }
 
 .logo {
-font-size: 24px;
+font-size: 28px;
 margin-right: 10px;
 animation: blink 1.5s infinite;
 }
@@ -49,7 +52,7 @@ animation: blink 1.5s infinite;
 }
 
 h1.animated-title {
-font-size: 1.6em;
+font-size: 1.8em;
 font-weight: 700;
 background: linear-gradient(90deg, #ff4500, #ff6347, #dc143c, #b22222, #ff4500);
 background-size: 300% 300%;
@@ -65,53 +68,52 @@ animation: gradientMove 5s ease-in-out infinite;
 }
 
 .iphone-frame {
-margin-top: 20px;
-width: 300px;
-height: 620px;
-max-width: 95vw;
-max-height: 95vh;
+margin-top: 100px;
 border: 2px solid red;
 border-radius: 40px;
+padding: 60px 20px;
 position: relative;
-padding: 30px 10px;
+width: 340px;
+max-width: 90vw;
+aspect-ratio: 9 / 19.5;
 display: flex;
 flex-direction: column;
-justify-content: center;
 align-items: center;
-background: black;
+justify-content: center;
 }
 
 .notch {
 position: absolute;
-top: 12px;
+top: 10px;
 left: 50%;
 transform: translateX(-50%);
-width: 90px;
-height: 22px;
+width: 120px;
+height: 30px;
 background: black;
 border: 2px solid red;
-border-radius: 15px;
-z-index: 5;
+border-radius: 20px;
+z-index: 2;
 }
 
 .fps-display {
 position: absolute;
-top: 28px; /* Подняли счетчик FPS на уровень нижней части челки */
-left: 10px;
-font-size: 12px; /* Уменьшили размер для лучшего восприятия */
-color: #ff0;
-z-index: 10;
+top: 45px;
+left: 16px;
+font-size: 12px;
+z-index: 3;
 font-weight: bold;
-background: linear-gradient(90deg, violet, indigo, blue, green, yellow, orange, red); /* Радужный градиент */
--webkit-background-clip: text;
-color: transparent;
-animation: rainbowMove 3s ease-in-out infinite;
+animation: rainbowText 4s linear infinite;
 }
 
-@keyframes rainbowMove {
-0% { background-position: 0% 50%; }
-50% { background-position: 100% 50%; }
-100% { background-position: 0% 50%; }
+@keyframes rainbowText {
+0% { color: red; }
+14% { color: orange; }
+28% { color: yellow; }
+42% { color: green; }
+57% { color: blue; }
+71% { color: indigo; }
+85% { color: violet; }
+100% { color: red; }
 }
 
 .content {
@@ -120,35 +122,44 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 text-align: center;
-width: 100%;
+}
+
+.step-buttons {
+display: flex;
+justify-content: center;
+gap: 12px;
+margin-top: 10px;
+flex-wrap: wrap;
 }
 
 .step-button {
 border: 2px solid red;
 border-radius: 12px;
-padding: 8px 12px;
-font-size: 1.1em;
-margin: 6px;
+padding: 10px 14px;
+font-size: 0.9em;
 color: #fff;
 cursor: pointer;
 font-weight: 600;
 background: transparent;
-width: 85%;
+min-width: 130px;
+text-align: center;
 }
 
 .installers {
-margin-top: 6px;
+margin-top: 14px;
 display: none;
 justify-content: center;
-gap: 6px;
+gap: 10px;
+flex-direction: row;
 flex-wrap: nowrap;
+z-index: 2;
 }
 
 .installer-button {
 border: none;
-padding: 5px 8px;
-font-size: 0.75em;
-border-radius: 6px;
+padding: 8px 12px;
+font-size: 0.85em;
+border-radius: 8px;
 cursor: pointer;
 font-weight: 600;
 }
@@ -158,26 +169,14 @@ font-weight: 600;
 .feather-button { background-color: #9370db; color: white; }
 .scarlet-button { background-color: #dc143c; color: black; }
 
-@media (max-height: 600px) {
-.iphone-frame {
-transform: scale(0.85);
-}
-}
-
-@media (max-width: 480px) {
-.iphone-frame {
-width: 250px;
-height: 560px;
-margin-top: 40px;
-}
-
-.step-button {
-padding: 8px 12px;
-font-size: 0.9em;
-}
-
+@media (max-width: 600px) {
 .installers {
-gap: 4px;
+flex-wrap: wrap;
+}
+
+.step-buttons {
+flex-direction: column;
+align-items: center;
 }
 }
 </style>
@@ -188,12 +187,14 @@ gap: 4px;
 <h1 class="animated-title">Vibe Hack iPA</h1>
 </header>
 
-<div class="iphone-frame">
+<div class="iphone-frame" onclick="event.stopPropagation()">
 <div class="notch"></div>
-<div class="fps-display" id="fpsDisplay">FPS: 0</div> <!-- FPS отображение -->
+<div class="fps-display" id="fps">FPS: 0</div>
 <div class="content">
+<div class="step-buttons">
 <div class="step-button" onclick="openModal('certificate')">Получить сертификат</div>
-<div class="step-button" onclick="toggleInstallers(event)">Установщик IPA файлов</div>
+<div class="step-button" onclick="toggleInstallers()">Установщик IPA файлов</div>
+</div>
 <div id="installersChoices" class="installers">
 <button class="installer-button esign-button" onclick="openInstallerModal('ESign')">ESign</button>
 <button class="installer-button gbox-button" onclick="openInstallerModal('GBox')">GBox</button>
@@ -204,45 +205,39 @@ gap: 4px;
 </div>
 
 <script>
-let lastTime = 0;
-let fps = 0;
+let fpsElement = document.getElementById("fps");
+let frameCount = 0;
+let lastTime = performance.now();
 
-function calculateFPS(timestamp) {
-if (lastTime === 0) {
-lastTime = timestamp;
-requestAnimationFrame(calculateFPS);
-return;
+function updateFPS() {
+let now = performance.now();
+frameCount++;
+if (now - lastTime >= 1000) {
+fpsElement.textContent = `FPS: ${frameCount}`;
+frameCount = 0;
+lastTime = now;
+}
+requestAnimationFrame(updateFPS);
 }
 
-const delta = timestamp - lastTime;
-fps = Math.round(1000 / delta); // Расчет FPS
-document.getElementById('fpsDisplay').textContent = `FPS: ${fps}`;
-
-lastTime = timestamp;
-requestAnimationFrame(calculateFPS); // Повторный вызов для обновления
-}
+updateFPS();
 
 function openModal(step) {
 alert(`Открыт раздел: ${step}`);
 }
 
-function toggleInstallers(event) {
-event.stopPropagation();
+function toggleInstallers() {
 const installers = document.getElementById('installersChoices');
 installers.style.display = installers.style.display === 'flex' ? 'none' : 'flex';
 }
 
 function closeInstallers() {
-const installers = document.getElementById('installersChoices');
-installers.style.display = 'none';
+document.getElementById('installersChoices').style.display = 'none';
 }
 
 function openInstallerModal(name) {
 alert(`Инструкция для ${name} будет добавлена позже`);
 }
-
-// Инициализация FPS расчета
-requestAnimationFrame(calculateFPS);
 </script>
 </body>
 </html>
