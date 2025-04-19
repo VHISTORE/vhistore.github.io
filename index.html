@@ -4,41 +4,101 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vibe Hack iPA</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #000;
+      color: #fff;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 15px;
+      background: rgba(0, 0, 0, 0.7);
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      text-align: center;
+      height: 60px;
+      border-bottom: 2px solid red;
+    }
+
+    .logo {
+      font-size: 28px;
+      margin-left: 10px;
+    }
+
+    h1.animated-title {
+      font-size: 1.8em;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      animation: slideIn 1s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px 20px;
+      max-width: 900px;
+      width: 100%;
+      margin-top: 120px;
+    }
+
+    .step-button {
+      display: inline-block;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 20px;
+      font-size: 1.2em;
+      margin: 10px;
+      color: #fff;
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform 0.2s, background 0.3s;
+      background-color: #444;
+    }
+
+    .step-button:hover {
+      transform: scale(1.05);
+    }
+  </style>
 </head>
-<body class="dark-theme">
+<body>
   <header>
     <h1 class="animated-title">Vibe Hack iPA</h1>
     <div class="logo"></div>
   </header>
 
   <div class="content">
-    <div class="step-button" style="background:#444;" onclick="openModal('certificate')">Получить сертификат</div>
-    <div class="step-button" style="background:#444;" onclick="showInstallers()">Установщик IPA файлов</div>
+    <div class="step-button" onclick="alert('Скоро будет доступно!')">Получить сертификат</div>
+    <div class="step-button" onclick="alert('Установщики скоро появятся')">Установщик IPA файлов</div>
   </div>
-
-  <div id="installersOverlay" onclick="closeInstallersOverlay()">
-    <div id="installersChoices" onclick="event.stopPropagation()">
-      <button class="step-button esign-button" onclick="openInstallerModal('ESign')">ESign</button>
-      <button class="step-button gbox-button" onclick="openInstallerModal('GBox')">GBox</button>
-      <button class="step-button feather-button" onclick="openInstallerModal('Feather')">Feather</button>
-      <button class="step-button scarlet-button" onclick="openInstallerModal('Scarlet')">Scarlet</button>
-    </div>
-  </div>
-
-  <div id="modal" class="modal" onclick="closeModal(event)">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">×</span>
-      <h2>Инструкция</h2>
-      <p>Здесь будет инструкция для выбранного инструмента.</p>
-      <div class="nav-buttons">
-        <button onclick="previousStep()">Назад</button>
-        <button id="nextButton" onclick="nextStep()">Далее</button>
-      </div>
-    </div>
-  </div>
-
-  <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
-  <script src="script.js"></script>
 </body>
 </html>
