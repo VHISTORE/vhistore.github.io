@@ -1,1 +1,59 @@
-[HTML CONTENT PLACEHOLDER]
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Hack iPA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 80px;
+            background-color: #000;
+            border-bottom: 1px solid red;
+        }
+        .logo {
+            height: 50px;
+            margin-right: 10px;
+        }
+        .title {
+            font-size: 30px;
+            font-weight: bold;
+            background: linear-gradient(45deg, red, blue);
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: gradient 3s linear infinite;
+        }
+        @keyframes gradient {
+            0% {
+                background: linear-gradient(45deg, red, blue);
+            }
+            50% {
+                background: linear-gradient(45deg, yellow, purple);
+            }
+            100% {
+                background: linear-gradient(45deg, red, blue);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <img src="apple_logo.png" class="logo" alt="Apple Logo">
+        <h1 class="title">Vibe Hack iPA</h1>
+    </header>
+    <main>
+        <div class="content">
+            <button class="install-btn">Получить сертификат</button>
+            <button class="ipa-btn">Установщик IPA файлов</button>
+        </div>
+    </main>
+</body>
+</html>
