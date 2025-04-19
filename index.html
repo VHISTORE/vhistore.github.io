@@ -15,9 +15,10 @@ body {
 font-family: sans-serif;
 background-color: #000;
 color: #fff;
-overflow: hidden;
+overflow-x: hidden;
 display: flex;
 flex-direction: column;
+justify-content: center;
 align-items: center;
 min-height: 100vh;
 }
@@ -40,13 +41,7 @@ height: 60px;
 
 .logo {
 font-size: 28px;
-margin-right: 10px;
-animation: blink 1.2s infinite;
-}
-
-@keyframes blink {
-0%, 100% { opacity: 1; }
-50% { opacity: 0.2; }
+margin-left: 10px;
 }
 
 h1.animated-title {
@@ -71,12 +66,12 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 text-align: center;
-height: 100vh;
-width: 100%;
+padding: 40px 20px;
+margin-top: 120px;
 }
 
 .step-button {
-border: 2px solid red;
+border: none;
 border-radius: 12px;
 padding: 12px 20px;
 font-size: 1.2em;
@@ -84,13 +79,33 @@ margin: 10px;
 color: #fff;
 cursor: pointer;
 font-weight: 600;
-background: #111;
+background: #444;
+}
+
+#iphone-container {
+width: 400px;
+height: 800px;
+border: 10px solid #000;
+border-radius: 40px;
+padding: 20px;
+position: relative;
+background-color: #fff;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+margin-top: 80px;
+}
+
+#iphone-container .content {
+width: 100%;
+padding: 0;
 }
 
 #installersOverlay {
 position: fixed;
 inset: 0;
-background: rgba(0, 0, 0, 0.7);
+background: transparent;
 z-index: 90;
 display: none;
 justify-content: center;
@@ -99,23 +114,19 @@ padding: 20px;
 }
 
 #installersChoices {
-background: #111;
-padding: 15px 20px;
-border-radius: 12px;
 display: flex;
-gap: 10px;
+gap: 8px;
 justify-content: center;
-flex-wrap: nowrap;
+flex-wrap: wrap;
 }
 
 .installer-button {
 border: none;
-padding: 10px 16px;
-font-size: 0.95em;
+padding: 8px 12px;
+font-size: 0.9em;
 border-radius: 8px;
 cursor: pointer;
 font-weight: 600;
-white-space: nowrap;
 }
 
 .esign-button { background-color: #00bfff; color: white; }
@@ -125,29 +136,36 @@ white-space: nowrap;
 
 @media (max-width: 600px) {
 #installersChoices {
-flex-wrap: nowrap;
-overflow-x: auto;
+flex-wrap: wrap;
+justify-content: center;
+}
+
+#iphone-container {
+width: 90%;
+height: 600px;
 }
 }
 </style>
 </head>
-<body onclick="closeInstallersOverlay()">
+<body>
 <header>
-<div class="logo"></div>
 <h1 class="animated-title">Vibe Hack iPA</h1>
+<div class="logo"></div>
 </header>
 
-<div class="content" onclick="event.stopPropagation()">
+<div id="iphone-container">
+<div class="content">
 <div class="step-button" onclick="openModal('certificate')">Получить сертификат</div>
 <div class="step-button" onclick="showInstallers()">Установщик IPA файлов</div>
 </div>
 
-<div id="installersOverlay">
+<div id="installersOverlay" onclick="closeInstallersOverlay()">
 <div id="installersChoices" onclick="event.stopPropagation()">
 <button class="installer-button esign-button" onclick="openInstallerModal('ESign')">ESign</button>
 <button class="installer-button gbox-button" onclick="openInstallerModal('GBox')">GBox</button>
 <button class="installer-button feather-button" onclick="openInstallerModal('Feather')">Feather</button>
 <button class="installer-button scarlet-button" onclick="openInstallerModal('Scarlet')">Scarlet</button>
+</div>
 </div>
 </div>
 
