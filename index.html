@@ -4,7 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Vibe Hack iPA</title>
-
 <style>
 * {
 box-sizing: border-box;
@@ -13,13 +12,12 @@ padding: 0;
 }
 
 body {
-font-family: 'Arial', sans-serif;
+font-family: Arial, sans-serif;
 background-color: #000;
 color: #fff;
 overflow-x: hidden;
 display: flex;
 flex-direction: column;
-justify-content: center;
 align-items: center;
 min-height: 100vh;
 }
@@ -34,33 +32,32 @@ width: 100%;
 position: fixed;
 top: 0;
 z-index: 10;
-text-align: center;
 height: 60px;
 border-bottom: 2px solid red;
 }
 
 .logo {
 font-size: 28px;
-margin-left: 15px;
+margin-left: 10px;
 }
 
 h1.animated-title {
 font-size: 1.8em;
 font-weight: 700;
-text-align: center;
 letter-spacing: 2px;
 text-transform: uppercase;
-background: linear-gradient(90deg, #ff4500, #ff6347, #dc143c, #b22222, #ff4500);
-background-size: 300% 300%;
+animation: gradientChange 5s ease-in-out infinite;
+background: linear-gradient(90deg, #ff4500, #ff6347);
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
-animation: gradientChange 5s ease-in-out infinite;
 }
 
 @keyframes gradientChange {
-0% { background-position: 0% 50%; }
-50% { background-position: 100% 50%; }
-100% { background-position: 0% 50%; }
+0% { background: linear-gradient(90deg, #ff4500, #ff6347); }
+25% { background: linear-gradient(90deg, #ff6347, #dc143c); }
+50% { background: linear-gradient(90deg, #dc143c, #b22222); }
+75% { background: linear-gradient(90deg, #b22222, #ff4500); }
+100% { background: linear-gradient(90deg, #ff4500, #ff6347); }
 }
 
 .content {
@@ -68,32 +65,56 @@ display: flex;
 flex-direction: column;
 align-items: center;
 padding: 40px 20px;
-margin-top: 100px;
+margin-top: 120px;
 }
 
-.step-button {
+.step-button.large {
 display: inline-block;
 border: none;
 border-radius: 12px;
-padding: 12px 20px;
-font-size: 1.2em;
+padding: 14px 24px;
+font-size: 1.4em;
 margin: 10px;
 color: #fff;
 cursor: pointer;
 font-weight: 600;
-width: 160px;
-transition: transform 0.2s, background 0.3s;
-text-align: center;
+background-color: #444;
 }
 
-.step-button:hover {
-transform: scale(1.05);
+#installersOverlay {
+position: fixed;
+inset: 0;
+background: rgba(0, 0, 0, 0.0);
+z-index: 90;
+display: none;
+justify-content: center;
+align-items: center;
+padding: 20px;
 }
 
-.esign-button { background-color: #00bfff; }
-.gbox-button { background-color: #32cd32; color: #000; }
-.feather-button { background-color: #9370db; }
-.scarlet-button { background-color: #dc143c; }
+#installersChoices {
+background: rgba(0, 0, 0, 0.5);
+backdrop-filter: blur(10px);
+border-radius: 16px;
+padding: 20px;
+display: flex;
+justify-content: center;
+gap: 12px;
+flex-wrap: nowrap;
+}
+
+.install-button {
+width: 80px;
+height: 80px;
+font-size: 0.9em;
+border-radius: 10px;
+padding: 10px;
+color: #fff;
+cursor: pointer;
+font-weight: 600;
+border: none;
+transition: transform 0.2s;
+}
 
 .modal {
 display: none;
@@ -102,6 +123,7 @@ inset: 0;
 background: rgba(0, 0, 0, 0.7);
 backdrop-filter: blur(10px);
 z-index: 99;
+overflow-y: auto;
 padding: 40px 20px;
 }
 
@@ -138,28 +160,8 @@ color: #fff;
 cursor: pointer;
 }
 
-#installersOverlay {
-position: fixed;
-inset: 0;
-background: rgba(0, 0, 0, 0.6);
-z-index: 90;
-display: none;
-justify-content: center;
-align-items: center;
-padding: 20px;
-}
-
-#installersChoices {
-background: rgba(0, 0, 0, 0.5);
-backdrop-filter: blur(10px);
-border-radius: 16px;
-padding: 20px;
-display: flex;
-justify-content: space-between;
-gap: 10px;
-max-width: 100%;
-flex-wrap: wrap;
-margin: 0 auto;
+.nav-buttons button:hover {
+background: rgba(255,255,255,0.2);
 }
 
 .theme-toggle {
@@ -176,6 +178,18 @@ border: none;
 cursor: pointer;
 z-index: 10;
 }
+
+@media (max-width: 600px) {
+.install-button {
+width: 70px;
+height: 70px;
+font-size: 0.8em;
+}
+
+#installersChoices {
+flex-wrap: wrap;
+}
+}
 </style>
 </head>
 <body>
@@ -185,19 +199,21 @@ z-index: 10;
 </header>
 
 <div class="content">
-<div class="step-button" style="background:#444;" onclick="openModal('certificate')">Получить сертификат</div>
-<div class="step-button" style="background:#444;" onclick="showInstallers()">Установщик IPA файлов</div>
+<div class="step-button large" onclick="openModal('certificate')">Получить сертификат</div>
+<div class="step-button large" onclick="showInstallers()">Установщик IPA файлов</div>
 </div>
 
+<!-- Установщики -->
 <div id="installersOverlay" onclick="closeInstallersOverlay()">
 <div id="installersChoices" onclick="event.stopPropagation()">
-<button class="step-button esign-button" onclick="openInstallerModal('ESign')">ESign</button>
-<button class="step-button gbox-button" onclick="openInstallerModal('GBox')">GBox</button>
-<button class="step-button feather-button" onclick="openInstallerModal('Feather')">Feather</button>
-<button class="step-button scarlet-button" onclick="openInstallerModal('Scarlet')">Scarlet</button>
+<button class="install-button" style="background:#00bfff;" onclick="openInstallerModal('ESign')">ESign</button>
+<button class="install-button" style="background:#32cd32; color:#000;" onclick="openInstallerModal('GBox')">GBox</button>
+<button class="install-button" style="background:#9370db;" onclick="openInstallerModal('Feather')">Feather</button>
+<button class="install-button" style="background:#dc143c;" onclick="openInstallerModal('Scarlet')">Scarlet</button>
 </div>
 </div>
 
+<!-- Модалка -->
 <div id="modal" class="modal" onclick="closeModal(event)">
 <div class="modal-content">
 <span class="close" onclick="closeModal()">×</span>
@@ -225,28 +241,27 @@ function closeInstallersOverlay() {
 document.getElementById('installersOverlay').style.display = 'none';
 }
 
-function openInstallerModal(type) {
-alert("Инструкция для " + type + " будет добавлена позже!");
+function openInstallerModal(installType) {
+alert(`Инструкция для ${installType} будет добавлена позже!`);
 }
 
-function openModal() {
+function openModal(step) {
 document.getElementById('modal').style.display = 'flex';
 }
 
 function closeModal(event) {
-if (event.target === document.getElementById('modal') || event.target.classList.contains('close')) {
+if (event.target === document.getElementById('modal')) {
 document.getElementById('modal').style.display = 'none';
 }
 }
 
 function previousStep() {
-console.log('Назад');
+console.log('Шаг назад');
 }
 
 function nextStep() {
-console.log('Вперед');
+console.log('Шаг вперед');
 }
 </script>
 </body>
 </html>
-
