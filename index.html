@@ -167,7 +167,7 @@
 
     @media (max-width: 480px) {
       .iphone-frame {
-        width: 67vw;
+        width: 75vw;  /* Увеличиваем ширину для мобильных устройств */
         height: 550px;
         margin-top: 40px;
       }
@@ -203,7 +203,7 @@
       border: 2px solid red;
       padding: 20px;
       border-radius: 16px;
-      max-width: 90%;
+      max-width: 95%;
       width: 320px;
       color: white;
       font-size: 1em;
@@ -334,13 +334,10 @@
             <li>После установки вас вернёт в бот — вы получите сообщение с вашим UDID:
               <code>UDID: 00008101-001E5C1A36C0001E<br>DEVICE: iPhone 12 Pro</code>
             </li>
-            <li>Выберите <b>Статус UDiD</b> и вставьте только ваш UDID (без других символов).</li>
-            <li>Нажмите <b>Получить Сертификат</b> → <b>ОК</b>.</li>
+            <li>Выберите <b>Статус UDiD</b>.</li>
           </ol>
         `;
       }
-
-      // Прочие инструкции для других контентов
 
       modal.classList.remove('hidden');
     }
@@ -366,4 +363,3 @@
   </script>
 </body>
 </html>
-
