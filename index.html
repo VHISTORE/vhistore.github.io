@@ -20,6 +20,7 @@ height: 100vh;
 display: flex;
 flex-direction: column;
 align-items: center;
+justify-content: center;
 }
 
 header {
@@ -83,11 +84,11 @@ position: absolute;
 top: 10px;
 left: 50%;
 transform: translateX(-50%);
-width: 100px;
-height: 28px;
+width: 90px; /* Уменьшена челка */
+height: 22px; /* Уменьшена челка */
 background: black;
 border: 2px solid red;
-border-radius: 20px;
+border-radius: 15px; /* Уменьшена */
 z-index: 5;
 }
 
@@ -118,7 +119,7 @@ margin-top: 6px;
 display: none;
 justify-content: center;
 gap: 6px;
-flex-wrap: wrap;
+flex-wrap: nowrap; /* Кнопки в одну линию */
 }
 
 .installer-button {
@@ -148,11 +149,11 @@ transform: scale(0.85);
 <h1 class="animated-title">Vibe Hack iPA</h1>
 </header>
 
-<div class="iphone-frame">
+<div class="iphone-frame" onclick="closeInstallers()">
 <div class="notch"></div>
 <div class="content">
 <div class="step-button" onclick="openModal('certificate')">Получить сертификат</div>
-<div class="step-button" onclick="toggleInstallers()">Установщик IPA файлов</div>
+<div class="step-button" onclick="toggleInstallers(event)">Установщик IPA файлов</div>
 <div id="installersChoices" class="installers">
 <button class="installer-button esign-button" onclick="openInstallerModal('ESign')">ESign</button>
 <button class="installer-button gbox-button" onclick="openInstallerModal('GBox')">GBox</button>
@@ -167,9 +168,15 @@ function openModal(step) {
 alert(`Открыт раздел: ${step}`);
 }
 
-function toggleInstallers() {
+function toggleInstallers(event) {
+event.stopPropagation(); // Предотвратить закрытие при клике на кнопку
 const installers = document.getElementById('installersChoices');
 installers.style.display = installers.style.display === 'flex' ? 'none' : 'flex';
+}
+
+function closeInstallers() {
+const installers = document.getElementById('installersChoices');
+installers.style.display = 'none';
 }
 
 function openInstallerModal(name) {
