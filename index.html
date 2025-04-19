@@ -84,7 +84,7 @@ background: #444;
 
 #installersOverlay {
 position: absolute;
-top: 120px; /* Отступ от верхней части экрана, чтобы установщики шли под кнопкой */
+top: 140px; /* Смещаем установщики сразу под кнопкой */
 left: 0;
 right: 0;
 background: transparent;
@@ -136,8 +136,8 @@ justify-content: center;
 <div class="step-button" onclick="showInstallers()">Установщик IPA файлов</div>
 
 <!-- Место для кнопок установщиков -->
-<div id="installersOverlay">
-<div id="installersChoices">
+<div id="installersOverlay" onclick="closeInstallersOverlay()">
+<div id="installersChoices" onclick="event.stopPropagation()">
 <button class="installer-button esign-button" onclick="openInstallerModal('ESign')">ESign</button>
 <button class="installer-button gbox-button" onclick="openInstallerModal('GBox')">GBox</button>
 <button class="installer-button feather-button" onclick="openInstallerModal('Feather')">Feather</button>
