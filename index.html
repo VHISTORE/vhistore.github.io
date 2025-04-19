@@ -16,10 +16,11 @@ font-family: sans-serif;
 background-color: #000;
 color: #fff;
 overflow: hidden;
-display: flex;
-flex-direction: column;
-align-items: center;
 height: 100vh;
+display: flex;
+justify-content: center;
+align-items: flex-start;
+padding-top: 50px;
 }
 
 header {
@@ -37,92 +38,116 @@ height: 60px;
 }
 
 .logo {
-font-size: 28px;
+font-size: 24px;
 margin-right: 10px;
+animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+0%, 100% { opacity: 1; }
+50% { opacity: 0.2; }
 }
 
 h1.animated-title {
-font-size: 1.8em;
+font-size: 1.6em;
 font-weight: 700;
-color: red; /* Убираем анимацию и делаем текст красным */
-}
-
-.iphone-frame {
-margin-top: 80px;
-border: 2px solid red;
-border-radius: 40px;
-padding: 30px 20px 40px;
-position: relative;
-width: 280px;
-max-width: 90vw;
-height: 580px;
-display: flex;
-align-items: center;
-justify-content: center;
-flex-direction: column;
-}
-
-/* Корректируем челку, чтобы она была компактной */
-.notch {
-position: absolute;
-top: -12px; /* Немного поднимем челку */
-left: 50%;
-transform: translateX(-50%);
-width: 130px; /* Уменьшаем длину челки */
-height: 20px;
-background: black;
-border-radius: 10px;
-border: 2px solid red;
-}
-
-.fps-counter {
-position: absolute;
-top: 22px;
-left: 20px;
-font-size: 0.9em;
-font-weight: bold;
-background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet, red);
+background: linear-gradient(90deg, #ff4500, #ff6347, #dc143c, #b22222, #ff4500);
 background-size: 300% 300%;
 -webkit-background-clip: text;
 color: transparent;
 animation: gradientMove 5s ease-in-out infinite;
 }
 
+@keyframes gradientMove {
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
+}
+
+.iphone-frame {
+margin-top: 20px;
+width: 300px;
+height: 620px;
+max-width: 95vw;
+max-height: 95vh;
+border: 2px solid red;
+border-radius: 40px;
+position: relative;
+padding: 30px 10px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+background: black;
+}
+
+.notch {
+position: absolute;
+top: 12px;
+left: 50%;
+transform: translateX(-50%);
+width: 90px;
+height: 22px;
+background: black;
+border: 2px solid red;
+border-radius: 15px;
+z-index: 5;
+}
+
+.fps-display {
+position: absolute;
+top: 28px; /* Подняли счетчик FPS на уровень нижней части челки */
+left: 10px;
+font-size: 12px; /* Уменьшили размер для лучшего восприятия */
+color: #ff0;
+z-index: 10;
+font-weight: bold;
+background: linear-gradient(90deg, violet, indigo, blue, green, yellow, orange, red); /* Радужный градиент */
+-webkit-background-clip: text;
+color: transparent;
+animation: rainbowMove 3s ease-in-out infinite;
+}
+
+@keyframes rainbowMove {
+0% { background-position: 0% 50%; }
+100% { background-position: 100% 50%; }
+}
+
 .content {
 display: flex;
 flex-direction: column;
+justify-content: center;
 align-items: center;
 text-align: center;
-gap: 12px;
+width: 100%;
 }
 
 .step-button {
 border: 2px solid red;
-border-radius: 10px;
-padding: 10px 12px;
-font-size: 1em;
-min-width: 120px;
+border-radius: 12px;
+padding: 8px 12px;
+font-size: 1.1em;
+margin: 6px;
 color: #fff;
 cursor: pointer;
 font-weight: 600;
 background: transparent;
+width: 85%;
 }
 
 .installers {
-margin-top: 10px;
+margin-top: 6px;
 display: none;
-flex-direction: row;
-flex-wrap: nowrap;
 justify-content: center;
-gap: 8px;
-flex-shrink: 0;
+gap: 6px;
+flex-wrap: nowrap;
 }
 
 .installer-button {
 border: none;
-padding: 6px 10px;
-font-size: 0.85em;
-border-radius: 8px;
+padding: 5px 8px;
+font-size: 0.75em;
+border-radius: 6px;
 cursor: pointer;
 font-weight: 600;
 }
@@ -132,36 +157,42 @@ font-weight: 600;
 .feather-button { background-color: #9370db; color: white; }
 .scarlet-button { background-color: #dc143c; color: black; }
 
-@media (max-width: 600px) {
+@media (max-height: 600px) {
 .iphone-frame {
-transform: scale(0.95);
-margin-top: 90px;
+transform: scale(0.85);
+}
+}
+
+@media (max-width: 480px) {
+.iphone-frame {
+width: 250px;
+height: 560px;
+margin-top: 40px;
 }
 
 .step-button {
+padding: 8px 12px;
 font-size: 0.9em;
-padding: 8px 10px;
 }
 
-.installer-button {
-font-size: 0.75em;
-padding: 4px 8px;
+.installers {
+gap: 4px;
 }
 }
 </style>
 </head>
-<body>
+<body onclick="closeInstallers()">
 <header>
 <div class="logo"></div>
 <h1 class="animated-title">Vibe Hack iPA</h1>
 </header>
 
-<div class="iphone-frame" id="iphoneFrame">
+<div class="iphone-frame">
 <div class="notch"></div>
-<div class="fps-counter" id="fpsCounter">FPS: 60</div>
+<div class="fps-display" id="fpsDisplay">FPS: 0</div> <!-- FPS отображение -->
 <div class="content">
 <div class="step-button" onclick="openModal('certificate')">Получить сертификат</div>
-<div class="step-button" onclick="toggleInstallers()">Установщик IPA файлов</div>
+<div class="step-button" onclick="toggleInstallers(event)">Установщик IPA файлов</div>
 <div id="installersChoices" class="installers">
 <button class="installer-button esign-button" onclick="openInstallerModal('ESign')">ESign</button>
 <button class="installer-button gbox-button" onclick="openInstallerModal('GBox')">GBox</button>
@@ -172,45 +203,45 @@ padding: 4px 8px;
 </div>
 
 <script>
+let lastTime = 0;
+let fps = 0;
+
+function calculateFPS(timestamp) {
+if (lastTime === 0) {
+lastTime = timestamp;
+requestAnimationFrame(calculateFPS);
+return;
+}
+
+const delta = timestamp - lastTime;
+fps = Math.round(1000 / delta); // Расчет FPS
+document.getElementById('fpsDisplay').textContent = `FPS: ${fps}`;
+
+lastTime = timestamp;
+requestAnimationFrame(calculateFPS); // Повторный вызов для обновления
+}
+
 function openModal(step) {
 alert(`Открыт раздел: ${step}`);
 }
 
-function toggleInstallers() {
+function toggleInstallers(event) {
+event.stopPropagation();
 const installers = document.getElementById('installersChoices');
 installers.style.display = installers.style.display === 'flex' ? 'none' : 'flex';
+}
+
+function closeInstallers() {
+const installers = document.getElementById('installersChoices');
+installers.style.display = 'none';
 }
 
 function openInstallerModal(name) {
 alert(`Инструкция для ${name} будет добавлена позже`);
 }
 
-document.body.addEventListener('click', function(e) {
-const installers = document.getElementById('installersChoices');
-const target = e.target;
-if (
-installers.style.display === 'flex' &&
-!target.classList.contains('step-button') &&
-!target.classList.contains('installer-button')
-) {
-installers.style.display = 'none';
-}
-});
-
-// FPS Simulation
-let lastFrameTime = performance.now();
-let fpsDisplay = document.getElementById("fpsCounter");
-
-function updateFPS() {
-const now = performance.now();
-const delta = now - lastFrameTime;
-lastFrameTime = now;
-const fps = Math.round(1000 / delta);
-fpsDisplay.textContent = `FPS: ${fps}`;
-requestAnimationFrame(updateFPS);
-}
-
-requestAnimationFrame(updateFPS);
+// Инициализация FPS расчета
+requestAnimationFrame(calculateFPS);
 </script>
 </body>
 </html>
