@@ -1,38 +1,63 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Vibe Hack iPA</title>
 <style>
-body {
+* {
+box-sizing: border-box;
 margin: 0;
 padding: 0;
-background: black;
+}
+
+body {
 font-family: sans-serif;
-color: white;
-text-align: center;
+background-color: #000;
+color: #fff;
+overflow-x: hidden;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
 }
 
 header {
-background: rgba(0, 0, 0, 0.8);
-padding: 40px 20px;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 10px;
+width: 100%;
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+background: rgba(0, 0, 0, 0.7);
+z-index: 10;
 border-bottom: 2px solid red;
+height: 60px;
 }
 
-h1 {
-font-size: 2em;
+.logo {
+font-size: 28px;
+margin-left: 10px;
+}
+
+h1.animated-title {
+font-size: 1.8em;
+font-weight: 700;
 background: linear-gradient(90deg, #ff4500, #ff6347, #dc143c, #b22222, #ff4500);
-background-size: 300%;
+background-size: 300% 300%;
 -webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-animation: gradientChange 6s ease infinite;
+color: transparent;
+animation: gradientMove 5s ease-in-out infinite;
 }
 
-@keyframes gradientChange {
-0% { background-position: 0%; }
-50% { background-position: 100%; }
-100% { background-position: 0%; }
+@keyframes gradientMove {
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
 }
 
 .content {
@@ -40,78 +65,99 @@ display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
-height: calc(100vh - 150px);
+text-align: center;
+padding: 40px 20px;
+margin-top: 120px;
 }
 
-.main-btn {
-background: #222;
-color: white;
-padding: 15px 30px;
-margin: 10px;
-font-size: 1.1em;
+.step-button {
 border: none;
-border-radius: 10px;
+border-radius: 12px;
+padding: 12px 20px;
+font-size: 1.2em;
+margin: 10px;
+color: #fff;
 cursor: pointer;
+font-weight: 600;
+background: #444;
 }
 
-#installersModal {
+#installersOverlay {
+position: fixed;
+inset: 0;
+background: transparent;
+z-index: 90;
 display: none;
-margin-top: 20px;
-padding: 15px;
-background: rgba(255, 255, 255, 0.05);
-backdrop-filter: blur(10px);
-border-radius: 12px;
+justify-content: center;
+align-items: center;
+padding: 20px;
+}
+
+#installersChoices {
 display: flex;
-gap: 10px;
+gap: 8px;
 justify-content: center;
 flex-wrap: wrap;
 }
 
-.installer-btn {
-padding: 10px 16px;
+.installer-button {
 border: none;
-border-radius: 10px;
-font-weight: bold;
-cursor: pointer;
-}
-
-.esign { background: #00bfff; color: white; }
-.gbox { background: #32cd32; color: black; }
-.feather { background: #9370db; color: white; }
-.scarlet { background: #dc143c; color: black; }
-
-@media (max-width: 600px) {
-.installer-btn {
 padding: 8px 12px;
 font-size: 0.9em;
+border-radius: 8px;
+cursor: pointer;
+font-weight: 600;
+}
+
+.esign-button { background-color: #00bfff; color: white; }
+.gbox-button { background-color: #32cd32; color: black; }
+.feather-button { background-color: #9370db; color: white; }
+.scarlet-button { background-color: #dc143c; color: black; }
+
+@media (max-width: 600px) {
+#installersChoices {
+flex-wrap: wrap;
+justify-content: center;
 }
 }
 </style>
 </head>
 <body>
-
 <header>
-<h1>Vibe Hack iPA</h1>
+<h1 class="animated-title">Vibe Hack iPA</h1>
+<div class="logo"></div>
 </header>
 
 <div class="content">
-<button class="main-btn">Получить сертификат</button>
-<button class="main-btn" onclick="toggleInstallers()">Установщик IPA файлов</button>
+<div class="step-button" onclick="openModal('certificate')">Получить сертификат</div>
+<div class="step-button" onclick="showInstallers()">Установщик IPA файлов</div>
+</div>
 
-<div id="installersModal">
-<button class="installer-btn esign">ESign</button>
-<button class="installer-btn gbox">GBox</button>
-<button class="installer-btn feather">Feather</button>
-<button class="installer-btn scarlet">Scarlet</button>
+<div id="installersOverlay" onclick="closeInstallersOverlay()">
+<div id="installersChoices" onclick="event.stopPropagation()">
+<button class="installer-button esign-button" onclick="openInstallerModal('ESign')">ESign</button>
+<button class="installer-button gbox-button" onclick="openInstallerModal('GBox')">GBox</button>
+<button class="installer-button feather-button" onclick="openInstallerModal('Feather')">Feather</button>
+<button class="installer-button scarlet-button" onclick="openInstallerModal('Scarlet')">Scarlet</button>
 </div>
 </div>
 
 <script>
-function toggleInstallers() {
-const modal = document.getElementById('installersModal');
-modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+function showInstallers() {
+document.getElementById('installersOverlay').style.display = 'flex';
+}
+
+function closeInstallersOverlay() {
+document.getElementById('installersOverlay').style.display = 'none';
+}
+
+function openInstallerModal(type) {
+alert(`Инструкция для ${type} будет добавлена позже`);
+}
+
+function openModal(step) {
+alert(`Открыт раздел: ${step}`);
 }
 </script>
-
 </body>
 </html>
