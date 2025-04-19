@@ -336,29 +336,29 @@
             </li>
             <li>Выберите <b>Статус UDiD</b> и вставьте только ваш UDID (без других символов).</li>
             <li>Нажмите <b>Получить Сертификат</b> → <b>ОК</b>.</li>
-            <li>Через 5 секунд бот пришлёт 2 файла сертификата.</li>
-            <li>Сохраните оба файла на ваше устройство.</li>
           </ol>
-        `;
-      } else {
-        body.innerHTML = `
-          <h3>${content}</h3>
-          <p>Инструкция для ${content} будет добавлена позже. Следите за обновлениями!</p>
         `;
       }
 
-      modal.classList.remove("hidden");
+      // Прочие инструкции для других контентов
+
+      modal.classList.remove('hidden');
     }
 
     function closeModal(event) {
-      event.stopPropagation();
-      document.getElementById("modal").classList.add("hidden");
+      if (event) {
+        event.stopPropagation();
+      }
+      const modal = document.getElementById("modal");
+      const themeButton = document.getElementById('themeToggle');
 
-      // Показать кнопку смены темы после закрытия модалки
-      document.getElementById('themeToggle').style.display = 'block';
+      // Вернуть кнопку смены темы
+      themeButton.style.display = 'block';
+
+      modal.classList.add('hidden');
     }
 
-    document.getElementById('themeToggle').addEventListener('click', () => {
+    document.getElementById("themeToggle").addEventListener("click", () => {
       document.body.classList.toggle('light');
     });
 
